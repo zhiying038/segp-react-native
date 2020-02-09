@@ -3,6 +3,7 @@ import { createAppContainer } from "react-navigation";
 import { createStackNavigator } from 'react-navigation-stack';
 import MainScreen from './src/screens/MainScreen';
 import AboutScreen from './src/screens/AboutScreen';
+import LoginScreen from './src/screens/LoginScreen';
 
 export default class App extends React.Component {
   render() {
@@ -13,16 +14,21 @@ export default class App extends React.Component {
 }
 
 const AppStackNavigator = createStackNavigator({
+  Login: {
+    screen: LoginScreen,
+    navigationOptions: {
+      headerShown: false
+    }
+  },
   Main: {
     screen: MainScreen
   },
   About: {
-    screen: AboutScreen
+    screen: AboutScreen,
   }
 }, {
-    initialRouteName: "Main"
-  }
-);
+  initialRouteName: 'Login'
+});
 
 
 
