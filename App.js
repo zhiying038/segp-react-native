@@ -4,6 +4,7 @@ import { createStackNavigator } from 'react-navigation-stack';
 import MainScreen from './src/screens/MainScreen';
 import AboutScreen from './src/screens/AboutScreen';
 import LoginScreen from './src/screens/LoginScreen';
+import RegisterScreen from './src/screens/RegisterScreen';
 
 export default class App extends React.Component {
   render() {
@@ -16,6 +17,12 @@ export default class App extends React.Component {
 const AppStackNavigator = createStackNavigator({
   Login: {
     screen: LoginScreen,
+    navigationOptions: {
+      headerShown: false
+    }
+  },
+  Register: {
+    screen: RegisterScreen,
     navigationOptions: {
       headerShown: false
     }

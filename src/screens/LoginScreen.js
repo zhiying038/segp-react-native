@@ -1,6 +1,5 @@
 import React from "react";
-import { StyleSheet, View, TouchableOpacity, Text, Button } from "react-native";
-import { TextInput } from "react-native-gesture-handler";
+import { StyleSheet, View, KeyboardAvoidingView, Image, TextInput, TouchableOpacity, Text, AsyncStorage } from "react-native";
 
 export default class LoginScreen extends React.Component {
   constructor(props) {
@@ -11,37 +10,62 @@ export default class LoginScreen extends React.Component {
     };
   }
 
+  async onLoginPress() {
+    const { email, password } = this.state;
+    await AsyncStorage.setItem("email", email);
+    await AsyncStorage.setItem("password", password);
+    this.props.navigation.navigate("Main");
+  }
+
   render() {
     return (
-      <View style={styles.container}>
-        <Text style={styles.logo}>Recycle</Text>
-        <View style={styles.inputView}>
+      <KeyboardAvoidingView behavior="padding" style={styles.container}>
+        <View style={styles.logoContainer}>
+          <Image
+            source={require("../../assets/recycle.png")}
+            style={styles.logo}
+          />
+        </View>
+        <View style={styles.formContainer}>
           <TextInput
-            style={styles.inputText}
+            style={styles.input}
             placeholder="Email"
-            placeholderTextColor="#003f5c"
-            onChangeText={text => this.setState({ email: text })}
+            placeholderTextColor="rgba(255,255,255,0.7)"
+            returnKeyType="next"
+            onSubmitEditing={() => this.passwordInput.focus()}
+            keyboardType="email-address"
+            autoCapitalize="none"
+            autoCorrect={false}
+            value={this.state.email}
+            onChangeText={email => this.setState({ email })}
           />
-        </View>
-        <View style={styles.inputView}>
           <TextInput
-            secureTextEntry
-            style={styles.inputText}
+            style={styles.input}
+            placeholderTextColor="rgba(255,255,255,0.7)"
             placeholder="Password"
-            placeholderTextColor="#003f5c"
-            onChangeText={text => this.setState({ password: text })}
+            secureTextEntry
+            returnKeyType="go"
+            ref={input => (this.passwordInput = input)}
+            value={this.state.password}
+            onChangeText={password => this.setState({ password })}
           />
+          <TouchableOpacity
+            style={styles.buttonContainer}
+            onPress={this.onLoginPress.bind(this)}
+          >
+            <Text style={styles.buttonText}>LOGIN</Text>
+          </TouchableOpacity>
+          <TouchableOpacity
+            style={styles.buttonContainer}
+            onPress={() => this.props.navigation.navigate("Register")}
+          >
+            <Text style={styles.buttonText}>REGISTER</Text>
+          </TouchableOpacity>
+          <TouchableOpacity>
+            <Text style={styles.buttonText}>Forgot Password?</Text>
+          </TouchableOpacity>
         </View>
-        <TouchableOpacity>
-          <Text style={styles.forgot}>Forgot Password?</Text>
-        </TouchableOpacity>
-        <TouchableOpacity style={styles.loginBtn} onPress={() => this.props.navigation.navigate("Main")}>
-            <Text style={styles.loginText}>LOGIN</Text>
-        </TouchableOpacity>
-        <TouchableOpacity>
-          <Text style={styles.loginText}>REGISTER</Text>
-        </TouchableOpacity>
-      </View>
+      </KeyboardAvoidingView>
     );
   }
 }
@@ -49,44 +73,35 @@ export default class LoginScreen extends React.Component {
 const styles = StyleSheet.create({
   container: {
     flex: 1,
-    backgroundColor: "#003f5c",
-    alignItems: "center",
-    justifyContent: "center"
+    backgroundColor: "#3498db"
   },
   logo: {
-    fontWeight: "bold",
-    fontSize: 50,
-    color: "#fb5b5a",
-    marginBottom: 40
+    width: 120,
+    height: 120
   },
-  inputView: {
-    width: "80%",
-    backgroundColor: "#465881",
-    borderRadius: 25,
-    height: 50,
-    marginBottom: 20,
-    justifyContent: "center",
+  logoContainer: {
+    alignItems: "center",
+    flexGrow: 1,
+    justifyContent: "center"
+  },
+  formContainer: {
     padding: 20
   },
-  inputText: {
-    height: 50,
-    color: "white"
-  },
-  forgot: {
-    color: "white",
-    fontSize: 11
-  },
-  loginBtn: {
-    width: "80%",
-    backgroundColor: "#fb5b5a",
-    borderRadius: 25,
-    height: 50,
-    alignItems: "center",
-    justifyContent: "center",
-    marginTop: 40,
-    marginBottom: 10
-  },
-  loginText: {
-    color: "white"
-  }
+  input: {
+    height: 40,
+    backgroundColor: 'rgba(255,255,255,0.2)',
+    marginBottom: 10,
+    color: '#fff',
+    paddingHorizontal: 10
+},
+buttonContainer: {
+    backgroundColor: '#2980b9',
+    paddingVertical: 15,
+    marginBottom: 5
+},
+buttonText: {
+    textAlign: 'center',
+    color: '#ffffff',
+    fontWeight: '700'
+},
 });
