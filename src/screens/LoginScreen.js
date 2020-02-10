@@ -21,10 +21,8 @@ export default class LoginScreen extends React.Component {
     return (
       <KeyboardAvoidingView behavior="padding" style={styles.container}>
         <View style={styles.logoContainer}>
-          <Image
-            source={require("../../assets/recycle.png")}
-            style={styles.logo}
-          />
+          <Image source={require("../../assets/recycle.png")} style={styles.logo} />
+          <Text style={styles.subtitle}>Login</Text>
         </View>
         <View style={styles.formContainer}>
           <TextInput
@@ -103,5 +101,13 @@ buttonText: {
     textAlign: 'center',
     color: '#ffffff',
     fontWeight: '700'
+},
+subtitle: {
+  color: '#ffffff',
+  width: 160,
+  textAlign: 'center',
+  fontSize: 35,
+  fontWeight: 'bold',
+  marginTop: 20
 },
 });
