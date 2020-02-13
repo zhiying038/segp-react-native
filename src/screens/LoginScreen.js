@@ -1,20 +1,73 @@
 import React from "react";
-import { StyleSheet, View, KeyboardAvoidingView, Image, TextInput, TouchableOpacity, Text, AsyncStorage } from "react-native";
+import { StyleSheet, View, KeyboardAvoidingView, Image, TextInput, TouchableOpacity, Text, AsyncStorage, NetInfo, Alert } from "react-native";
+import axios from 'axios';
 
 export default class LoginScreen extends React.Component {
   constructor(props) {
     super(props);
     this.state = {
+      isLoading: false,
       email: "",
-      password: ""
+      password: "",
+      checked: true
     };
+    this.login = this.login.bind(this);
+    this.goRegister = this.goRegister.bind(this);
+    this.forgotPassword = this.forgotPassword.bind(this);
+    this.submit = this.submit.bind(this);
   }
 
-  async onLoginPress() {
-    const { email, password } = this.state;
-    await AsyncStorage.setItem("email", email);
-    await AsyncStorage.setItem("password", password);
-    this.props.navigation.navigate("Main");
+  forgotPassword() {
+    this.props.navigation.navigate("ForgetPassword");
+  }
+
+  goRegister() {
+    this.props.navigation.navigate("Register");
+  }
+
+  submit() {
+    NetInfo.isConnected.fetch().then(isConnected => {
+      if (isConnected) {
+        if (this.state.email === '' || this.state.password === '') {
+          Alert.alert('Please enter all credentials.');
+        } else {
+          this.login();
+        }
+      } else {
+        Alert.alert('This app requires Internet connection.');
+      }
+    });
+  }
+
+  login() {
+    // this.setState({isLoading: true});
+    // fetch('http://localhost::8000/login', {
+    //   method: "POST",
+    //   headers: {
+    //     'Accept': 'application/json',
+    //     'Content-type': 'application/json'
+    //   },
+    //   body: JSON.stringify({
+    //     "email": this.state.email,
+    //     "password": this.state.password
+    //   })
+    // })
+    // .then(res => res.json())
+    // .then(data => {
+    //   this.setState({loading: false});
+    //   if (data.uid) {
+    //     Alert.alert("Login Successfully");
+    //     AsyncStorage.getItem("userData", JSON.stringify(data));
+    //     this.props.navigation.navigate("Main");
+    //   } else if (data.message === "Invalid credentials. Try Again.") {
+    //     Alert.alert("Invalid credentials");
+    //   } 
+    // })
+    // .catch(err => {
+    //   console.log(err);
+    //   this.setState({loading: false});
+    //   Alert.alert("Please check your Internet connection.");
+    // });
   }
 
   render() {
@@ -47,19 +100,13 @@ export default class LoginScreen extends React.Component {
             value={this.state.password}
             onChangeText={password => this.setState({ password })}
           />
-          <TouchableOpacity
-            style={styles.buttonContainer}
-            onPress={this.onLoginPress.bind(this)}
-          >
+          <TouchableOpacity style={styles.buttonContainer} onPress={() => this.submit()}>
             <Text style={styles.buttonText}>LOGIN</Text>
           </TouchableOpacity>
-          <TouchableOpacity
-            style={styles.buttonContainer}
-            onPress={() => this.props.navigation.navigate("Register")}
-          >
+          <TouchableOpacity style={styles.buttonContainer} onPress={this.goRegister}>
             <Text style={styles.buttonText}>REGISTER</Text>
           </TouchableOpacity>
-          <TouchableOpacity>
+          <TouchableOpacity onPress={this.forgotPassword}>
             <Text style={styles.buttonText}>Forgot Password?</Text>
           </TouchableOpacity>
         </View>
@@ -91,23 +138,23 @@ const styles = StyleSheet.create({
     marginBottom: 10,
     color: '#fff',
     paddingHorizontal: 10
-},
-buttonContainer: {
+  },
+  buttonContainer: {
     backgroundColor: '#2980b9',
     paddingVertical: 15,
     marginBottom: 5
-},
-buttonText: {
+  },
+  buttonText: {
     textAlign: 'center',
     color: '#ffffff',
     fontWeight: '700'
-},
-subtitle: {
+  },
+  subtitle: {
   color: '#ffffff',
   width: 160,
   textAlign: 'center',
   fontSize: 35,
   fontWeight: 'bold',
   marginTop: 20
-},
+  },
 });

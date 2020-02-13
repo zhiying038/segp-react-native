@@ -1,11 +1,15 @@
 import React from 'react';
-import {View, Text, StyleSheet, SafeAreaView, ScrollView, Image} from 'react-native';
+import {View, Text, StyleSheet, SafeAreaView, ScrollView, Image, TouchableOpacity} from 'react-native';
+import Icon from 'react-native-vector-icons';
 
 export default class ProfileScreen extends React.Component {
     render() {
         return (
             <SafeAreaView style={styles.container}>
                 <ScrollView showsVerticalScrollIndicator={false}>
+                    <TouchableOpacity onPress={() => this.props.navigation.navigate("Login")}>
+                        <Icon name="sign-out-alt" size={20} style={{alignSelf: 'center'}} />
+                    </TouchableOpacity>
                     <View style={{alignSelf: 'center'}}>
                         <View style={styles.profileImage}>
                             <Image source={require('../../assets/profile-placeholder.png')} style={styles.image} resizeMode="center"></Image>

@@ -1,19 +1,19 @@
 import React from 'react';
-import {View, Text, StyleSheet} from 'react-native';
+import { View, Text, StyleSheet } from 'react-native';
 import HighScore from '../components/HighScore';
 
 export default class LeaderboardScreen extends React.Component {
     constructor(props) {
         super(props);
         this.state = {
-            highScores: []
+            highScores: [],
         };
     }
 
     render() {
         return (
             <View style={styles.container}>
-                <HighScore />
+                <Text style={styles.leaderboard}>This is LeaderboardScreen.</Text>
             </View>
         )
     }
@@ -25,5 +25,8 @@ const styles = StyleSheet.create({
         justifyContent: 'center',
         alignItems: 'center',
         backgroundColor: 'white'
+    },
+    leaderboard: {
+        textAlign: 'center'
     }
 })
