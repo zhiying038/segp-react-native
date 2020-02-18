@@ -1,6 +1,5 @@
 import React from 'react';
 import {StyleSheet, Text, View, Image, TextInput, KeyboardAvoidingView, Alert, TouchableOpacity} from 'react-native';
-import {NetInfo} from '@react-native-community/netinfo';
 
 export default class RegisterScreen extends React.Component {
     constructor(props) {
@@ -17,64 +16,63 @@ export default class RegisterScreen extends React.Component {
         this.onRegister = this.onRegister.bind(this);
     }
 
-    register() {
-        NetInfo.isConnected.fetch().then(isConnected => {
-            if (isConnected) {
-                if (this.state.name === '' || this.state.email === '' || this.state.password === '' || this.state.confirmPassword === '' || this.state.sportHouse === '') {
-                    Alert.alert('Please enter all credentials.');
-                } else if (this.state.password !== this.state.confirmPassword) {
-                    Alert.alert('Password does not match.');
-                } else {
-                    this.onRegister(this.state.name, this.state.email, this.state.password, this.state.sportHouse);
-                }
-            }
-        })
-    }
+    // register() {
+    //     NetInfo.isConnected.fetch().then(isConnected => {
+    //         if (isConnected) {
+    //             if (this.state.name === '' || this.state.email === '' || this.state.password === '' || this.state.confirmPassword === '' || this.state.sportHouse === '') {
+    //                 Alert.alert('Please enter all credentials.');
+    //             } else if (this.state.password !== this.state.confirmPassword) {
+    //                 Alert.alert('Password does not match.');
+    //             } else {
+    //                 this.onRegister(this.state.name, this.state.email, this.state.password, this.state.sportHouse);
+    //             }
+    //         }
+    //     })
+    // }
 
-    onRegister(name, email, password, sportHouse) {
-        this.setState({
-            isLoading: true
-        });
-        // fetch("http://localhost::8000/register", {
-        //     method: "POST",
-        //     headers: {
-        //         'Accept': 'application/json',
-        //         'Content-Type': 'application/json'
-        //     },
-        //     body: JSON.stringify({
-        //         "name": name,
-        //         "email": email,
-        //         "password": password,
-        //         "sport_house": sportHouse
-        //     })
-        // })
-        // .then(res => res.json())
-        // .then(data => {
-        //     this.setState({isLoading: false});
-        //     if (data.message === "Successfully Registered") {
-        //         Alert.alert("Registered Successfully");
-        //         await AsyncStorage.setItem('email', email);
-        //         await AsyncStorage.setItem('password', password);
-        //         await AsyncStorage.setItem('name', name);
-        //         await AsyncStorage.setItem('sport_house', sportHouse)
-        //         this.props.navigation.navigate("Main");
-        //     } else {
-        //         Alert.alert("Something is wrong");
-        //     }
-        // })
-        // .catch(err => {
-        //     console.log(err);
-        //     Alert.alert('Please check your connection.');
-        //     this.setState({isLoading: false});
-        // });
-    }
+    // onRegister(name, email, password, sportHouse) {
+    //     this.setState({
+    //         isLoading: true
+    //     });
+    //     // fetch("http://localhost::8000/register", {
+    //     //     method: "POST",
+    //     //     headers: {
+    //     //         'Accept': 'application/json',
+    //     //         'Content-Type': 'application/json'
+    //     //     },
+    //     //     body: JSON.stringify({
+    //     //         "name": name,
+    //     //         "email": email,
+    //     //         "password": password,
+    //     //         "sport_house": sportHouse
+    //     //     })
+    //     // })
+    //     // .then(res => res.json())
+    //     // .then(data => {
+    //     //     this.setState({isLoading: false});
+    //     //     if (data.message === "Successfully Registered") {
+    //     //         Alert.alert("Registered Successfully");
+    //     //         await AsyncStorage.setItem('email', email);
+    //     //         await AsyncStorage.setItem('password', password);
+    //     //         await AsyncStorage.setItem('name', name);
+    //     //         await AsyncStorage.setItem('sport_house', sportHouse)
+    //     //         this.props.navigation.navigate("Main");
+    //     //     } else {
+    //     //         Alert.alert("Something is wrong");
+    //     //     }
+    //     // })
+    //     // .catch(err => {
+    //     //     console.log(err);
+    //     //     Alert.alert('Please check your connection.');
+    //     //     this.setState({isLoading: false});
+    //     // });
+    // }
 
     render() {
         return (
-            <KeyboardAvoidingView behavior="padding" style={styles.container}>
-                <View style={styles.logoContainer}>
-                    <Image style={styles.logo} source={require('../../assets/recycle.png')} />
-                    <Text style={styles.subtitle}>Register</Text>
+            <View style={styles.container}>
+                <View>
+                    <Text style={styles.home}>This is RegisterScreen.</Text>
                 </View>
                 <View style={styles.formContainer}>
                     <TextInput
@@ -120,58 +118,28 @@ export default class RegisterScreen extends React.Component {
                         returnKeyType="go"
                         ref={input => {this.passwordInput = input}}
                     />
-                    <TouchableOpacity onPress={this.register} style={styles.buttonContainer}>
+                    <TouchableOpacity onPress={() => this.props.navigation.navigate("Main")} style={styles.buttonContainer}>
                         <Text style={styles.buttonText}>REGISTER</Text>
                     </TouchableOpacity>
                     <TouchableOpacity onPress={() => this.props.navigation.navigate("Login")}>
                         <Text style={styles.buttonText}>Have Account? Login Here</Text>
                     </TouchableOpacity>
                 </View>
-            </KeyboardAvoidingView>
+            </View>
         )
-    }   
+    }
 }
 
 const styles = StyleSheet.create({
     container: {
         flex: 1,
-        backgroundColor: '#3498db'
+        justifyContent: 'center',
+        alignItems: 'center',
+        backgroundColor: 'white'
     },
-    logoContainer: {
-        alignItems: "center",
-        flexGrow: 1,
-        justifyContent: "center"
-    },
-    logo: {
-        width: 120,
-        height: 120
-    },
-    subtitle: {
-        color: '#ffffff',
-        width: 160,
+    home: {
+        fontSize: 20,
         textAlign: 'center',
-        fontSize: 35,
-        fontWeight: 'bold',
-        marginTop: 20
-    },
-    input: {
-        height: 40,
-        backgroundColor: 'rgba(255,255,255,0.2)',
-        marginBottom: 10,
-        color: '#fff',
-        paddingHorizontal: 10
-    },
-    formContainer: {
-        padding: 20
-    },
-    buttonContainer: {
-        backgroundColor: '#2980b9',
-        paddingVertical: 15,
-        marginBottom: 5
-    },
-    buttonText: {
-        textAlign: 'center',
-        color: '#ffffff',
-        fontWeight: '700'
-    },
+        margin: 10
+    }
 })
