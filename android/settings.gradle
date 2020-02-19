@@ -1,4 +1,8 @@
+<<<<<<< HEAD
 rootProject.name = 'ReactNativeSegp'
+=======
+rootProject.name = 'Recycling'
+>>>>>>> 594c0c2a8be8d0ce64a7d1e7dc3f4a26e351914b
 
 apply from: '../node_modules/react-native-unimodules/gradle.groovy'
 includeUnimodulesProjects()

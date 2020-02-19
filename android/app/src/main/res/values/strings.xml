@@ -1,3 +1,7 @@
 <resources>
+<<<<<<< HEAD
     <string name="app_name">ReactNativeSegp</string>
+=======
+    <string name="app_name">Recycling</string>
+>>>>>>> 594c0c2a8be8d0ce64a7d1e7dc3f4a26e351914b
 </resources>

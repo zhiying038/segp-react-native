@@ -1,8 +1,15 @@
 {
+<<<<<<< HEAD
   "name": "ReactNativeSegp",
   "displayName": "ReactNativeSegp",
   "expo": {
     "name": "ReactNativeSegp",
+=======
+  "name": "Recycling",
+  "displayName": "Recycling",
+  "expo": {
+    "name": "Recycling",
+>>>>>>> 594c0c2a8be8d0ce64a7d1e7dc3f4a26e351914b
     "slug": "expo-template-bare",
     "privacy": "unlisted",
     "sdkVersion": "36.0.0",

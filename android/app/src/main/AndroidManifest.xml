@@ -1,5 +1,9 @@
 <manifest xmlns:android="http://schemas.android.com/apk/res/android"
+<<<<<<< HEAD
     package="com.reactnativesegp">
+=======
+    package="com.recycling">
+>>>>>>> 594c0c2a8be8d0ce64a7d1e7dc3f4a26e351914b
 
     <uses-permission android:name="android.permission.INTERNET" />
     <uses-permission android:name="android.permission.SYSTEM_ALERT_WINDOW"/>

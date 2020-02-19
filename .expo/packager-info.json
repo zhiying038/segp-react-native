@@ -1,8 +1,18 @@
 {
   "devToolsPort": 19002,
   "expoServerPort": 19000,
+<<<<<<< HEAD
   "packagerPort": 19001,
   "packagerPid": 40284,
+=======
+<<<<<<< HEAD
+  "packagerPort": null,
+  "packagerPid": null,
+=======
+  "packagerPort": 19001,
+  "packagerPid": 1452,
+>>>>>>> parent of b1af595... updated login screen and added register screen
+>>>>>>> 594c0c2a8be8d0ce64a7d1e7dc3f4a26e351914b
   "expoServerNgrokUrl": null,
   "packagerNgrokUrl": null,
   "ngrokPid": null

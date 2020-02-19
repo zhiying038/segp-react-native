@@ -100,7 +100,11 @@ android {
     buildToolsVersion rootProject.ext.buildToolsVersion
 
     defaultConfig {
+<<<<<<< HEAD
         applicationId "com.reactnativesegp"
+=======
+        applicationId "com.recycling"
+>>>>>>> 594c0c2a8be8d0ce64a7d1e7dc3f4a26e351914b
         minSdkVersion rootProject.ext.minSdkVersion
         targetSdkVersion rootProject.ext.targetSdkVersion
         versionCode 1
