@@ -1,9 +1,17 @@
 # Recyling App
 
-Below are the framework and technologies used for in the project:
+Below are the packages used in the project:
 - React Native
 - react-navigation
 - react-navigation-tabs
 - react-navigation-stack
 - react-native-vector-icons
-- @react-native-community/netinfo
+- react-native-safe-area-context
+- react-native-is-iphonex
+- @react-native-community/masked-view
+- native-base
+- expo-camera
+- expo-permissions
+- expo-face-detector
+- expo-file-system
+- expo-media-library
