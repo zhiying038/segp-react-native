@@ -13,7 +13,7 @@ import { Camera } from 'expo-camera';
 import * as FileSystem from 'expo-file-system';
 import * as Permissions from 'expo-permissions';
 
-import GalleryScreen from '../components/GalleryScreen';
+import GalleryScreen from './GalleryScreen';
 import isIPhoneX from 'react-native-is-iphonex';
 
 import { 

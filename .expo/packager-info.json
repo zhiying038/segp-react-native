@@ -1,19 +1,9 @@
 {
   "devToolsPort": 19002,
   "expoServerPort": 19000,
-<<<<<<< HEAD
   "packagerPort": 19001,
-  "packagerPid": 40284,
-=======
-<<<<<<< HEAD
-  "packagerPort": null,
-  "packagerPid": null,
-=======
-  "packagerPort": 19001,
-  "packagerPid": 1452,
->>>>>>> parent of b1af595... updated login screen and added register screen
->>>>>>> 594c0c2a8be8d0ce64a7d1e7dc3f4a26e351914b
-  "expoServerNgrokUrl": null,
-  "packagerNgrokUrl": null,
-  "ngrokPid": null
+  "packagerPid": 31772,
+  "expoServerNgrokUrl": "https://9p-3g6.anonymous.reactnativesegp.exp.direct",
+  "packagerNgrokUrl": "https://packager.9p-3g6.anonymous.reactnativesegp.exp.direct",
+  "ngrokPid": 30848
 }

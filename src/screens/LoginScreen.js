@@ -1,15 +1,64 @@
 import React from "react";
-import { StyleSheet, View, KeyboardAvoidingView, Image, TextInput, TouchableOpacity, Text } from "react-native";
+import { StyleSheet, View, KeyboardAvoidingView, Image, TextInput, TouchableOpacity, Text, Alert, AsyncStorage } from "react-native";
+import NetInfo from '@react-native-community/netinfo';
 
 export default class LoginScreen extends React.Component {
   constructor(props) {
     super(props);
     this.state = {
       isLoading: false,
-      email: "",
+      studentId: "",
       password: "",
       checked: true
     };
+    this.performLogin = this.performLogin.bind(this);
+    this.submitLogin = this.submitLogin.bind(this);
+  }
+
+  submitLogin() {
+    NetInfo.fetch().then(isConnected => {
+      if (isConnected) {
+        if (this.state.studentId === '' || this.state.password === '') {
+          Alert.alert("Please enter all credentials.");
+        } else {
+          this.performLogin();
+        }
+      } else {
+        Alert.alert("Please check your Internet connection.");
+      }
+    })
+  }
+
+  performLogin() {
+    this.setState({isLoading: true});
+    fetch('http://localhost:5000/student/', {
+      method: 'POST',
+      headers: {
+        'Accept': 'application/json',
+        'Content-Type': 'application/json'
+      },
+      body: JSON.stringify({
+        "studentId": this.state.studentId,
+        "password": this.state.password
+      })
+    })
+    .then(res => res.json())
+    .then(resData => {
+      console.log(resData);
+      this.setState({ isLoading: false });
+      if (resData.uid) {
+        Alert.alert("Successfully Login!");
+        AsyncStorage.setItem("userData", JSON.stringify(resData));
+        this.props.navigation.navigate("Main");
+      } else if (resData.message === "Invalid credentials. Try Again.") {
+        Alert.alert("Incorrect Credentials");
+      }
+    })
+    .catch(err => {
+      console.log(err);
+      this.setState({isLoading: false});
+      Alert.alert("Please check your Internet connection.");
+    })
   }
 
   render() {
@@ -62,7 +111,7 @@ export default class LoginScreen extends React.Component {
 const styles = StyleSheet.create({
   container: {
     flex: 1,
-    backgroundColor: "#3498db"
+    backgroundColor: "#3098db"
   },
   logo: {
     width: 120,

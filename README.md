@@ -9,9 +9,13 @@ Below are the packages used in the project:
 - react-native-safe-area-context
 - react-native-is-iphonex
 - @react-native-community/masked-view
+- @react-native-community/netinfo
 - native-base
 - expo-camera
 - expo-permissions
 - expo-face-detector
 - expo-file-system
 - expo-media-library
+- redux
+- react-redux
+- redux-thunk

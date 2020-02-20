@@ -3,11 +3,10 @@ import {Platform, TouchableOpacity } from 'react-native';
 import {createBottomTabNavigator} from 'react-navigation-tabs'
 import {createAppContainer} from 'react-navigation';
 import Icon from 'react-native-vector-icons/FontAwesome5';
-import HomeScreen from './HomeScreen';
-import GameScreen from './GameScreen';
-import LeaderboardScreen from './LeaderboardScreen';
-import ProfileScreen from './ProfileScreen';
-import CameraScreen from './CameraScreen';
+import HomeScreen from './screens/HomeScreen';
+import GameScreen from './screens/GameScreen';
+import LeaderboardScreen from './screens/LeaderboardScreen';
+import ProfileScreen from './screens/ProfileScreen';
 
 export default class MainScreen extends React.Component {
     static navigationOptions = ({navigation}) => {

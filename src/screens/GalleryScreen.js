@@ -5,7 +5,7 @@ import * as FaceDetector from 'expo-face-detector';
 import * as MediaLibrary from 'expo-media-library';
 import * as Permissions from 'expo-permissions';
 import { MaterialIcons } from '@expo/vector-icons';
-import Photo from './Photo';
+import Photo from '../components/Photo';
 
 const PHOTOS_DIR = FileSystem.documentDirectory + 'photos';
 

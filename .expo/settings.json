@@ -1,16 +1,8 @@
 {
-<<<<<<< HEAD
+  "dev": true,
+  "minify": false,
   "hostType": "lan",
   "lanType": "ip",
-  "dev": true,
-  "minify": false,
-  "urlRandomness": "hi-gfu",
-=======
-  "hostType": "tunnel",
-  "lanType": "ip",
-  "dev": true,
-  "minify": false,
-  "urlRandomness": "fd-gne",
->>>>>>> 594c0c2a8be8d0ce64a7d1e7dc3f4a26e351914b
+  "urlRandomness": "9p-3g6",
   "https": false
 }
