@@ -1,83 +1,59 @@
 import React from "react";
-import {StyleSheet, Text, View, Image, TextInput, KeyboardAvoidingView, Alert, TouchableOpacity} from "react-native";
-import NetInfo from "@react-native-community/netinfo";
+import {StyleSheet, Text, View, Image, TextInput, KeyboardAvoidingView, Alert, TouchableOpacity, Picker} from "react-native";
+import axios from 'axios';
+
+const serverUrl = "http://127.0.0.1:5000";
+const http = axios.create({
+  baseURL: serverUrl
+});
 
 export default class RegisterScreen extends React.Component {
   constructor(props) {
     super(props);
     this.state = {
-      isLoading: false,
       name: "",
       studentId: "",
       email: "",
-      password: "",
       sportHouse: "",
-      confirmPassword: ""
-    };
+      password: "",
+      confirmPassword: "",
+      isLoading: false
+    }
+    this.onRegister = this.onRegister.bind(this);
+    this.performRegister = this.performRegister.bind(this);
+  }
+
+  onRegister(name, studentId, email, sportHouse, password) {
+    console.log(email);
+    console.log(studentId);
+    console.log(name);
+    console.log(sportHouse);
+    console.log(password);
+
+    this.setState({ isLoading: true });
+    http.post('/student', {
+      "StudentName": name,
+      "StudentID": studentId,
+      "Email": email,
+      "HouseID": sportHouse,
+      "Password": password
+    })
+    .then(response => {
+      response.json();
+      this.setState({ isLoading: false });
+      Alert.alert("You have registered successfully!");
+      this.props.navigation.navigate("Login");
+    })
+    .catch(error => {
+      console.log(error);
+      this.setState({ isLoading: false });
+    })
   }
 
   performRegister() {
-    NetInfo.fetch().then(isConnected => {
-      if (isConnected) {
-        if (
-          this.state.name === "" ||
-          this.state.studentId === "" ||
-          this.state.email === "" ||
-          this.state.password === "" ||
-          this.state.confirmPassword === "" ||
-          this.state.sportHouse === ""
-        ) {
-          Alert.alert("Please enter all credentials.");
-        } else if (this.state.password !== this.state.confirmPassword) {
-          Alert.alert("Password does not match.");
-        } else {
-          this.submitRegister(
-            this.state.name,
-            this.state.studentId,
-            this.state.email,
-            this.state.password,
-            this.state.sportHouse
-          );
-        }
-      } else {
-          Alert.alert("The app requires Internet connection.");
-      }
-    });
-  }
-
-  submitRegister(name, studId, email, password, sport_house) {
-    this.setState({isLoading: true});
-    fetch("http://localhost:5000", {
-        method: "POST",
-        headers: {
-            "Accept": "application/json",
-            "Content-Type": "application/json"
-        },
-        body: JSON.stringify({
-            "name": name,
-            "studentId": studId,
-            "email": email,
-            "password": password,
-            "sportHouse": sport_house
-        })
-    })
-    .then(res => res.json())
-    .then(resData => {
-        console.log(JSON.stringify(resData));
-        this.setState({isLoading: false});
-        if (resData.message === "Successfully Registered") {
-            Alert.alert("Registered Successfully");
-            this.props.navigation.navigate("Login");
-        } else {
-            Alert.alert("Something is wrong");
-        }
-    })
-    .catch(err => {
-        console.log(err);
-        Alert.alert("Please check your Internet connection.");
-        this.setState({isLoading: false});
-    })
-  }
+      this.onRegister(this.state.name, this.state.studentId, this.state.email, this.state.password,
+      this.state.sportHouse);
+  };
 
   render() {
     return (
@@ -90,8 +66,7 @@ export default class RegisterScreen extends React.Component {
         </View>
         <View style={styles.formContainer}>
           <TextInput
-            value={this.state.name}
-            onChangeText={name => this.setState({ name })}
+            onChangeText={text => this.setState({name: text})}
             style={styles.input}
             placeholder="Name"
             placeholderTextColor="rgba(255,255,255,0.7)"
@@ -99,8 +74,15 @@ export default class RegisterScreen extends React.Component {
             onSubmitEditing={() => this.emailInput.focus()}
           />
           <TextInput
-            value={this.state.email}
-            onChangeText={email => this.setState({ email })}
+            onChangeText={id => this.setState({studentId: id})}
+            placeholder="Student ID"
+            placeholderTextColor="rgba(255,255,255,0.7)"
+            returnKeyType="next"
+            keyboardType='number-pad'
+            style={styles.input}
+          />
+          <TextInput
+            onChangeText={text => this.setState({email: text})}
             style={styles.input}
             placeholderTextColor="rgba(255,255,255,0.7)"
             returnKeyType="next"
@@ -114,8 +96,18 @@ export default class RegisterScreen extends React.Component {
             placeholder="Email"
           />
           <TextInput
-            value={this.state.password}
-            onChangeText={password => this.setState({ password })}
+            onChangeText={text => this.setState({sportHouse: text})}
+            style={styles.input}
+            placeholderTextColor="rgba(255,255,255,0.7)"
+            returnKeyType="next"
+            ref={input => {
+              this.houseInput = input;
+            }}
+            autoCorrect={false}
+            placeholder="Sport House"
+          />
+          <TextInput
+            onChangeText={text => this.setState({password: text})}
             style={styles.input}
             placeholder="Password"
             placeholderTextColor="rgba(255,255,255,0.7)"
@@ -127,9 +119,8 @@ export default class RegisterScreen extends React.Component {
             secureTextEntry
           />
           <TextInput
-            value={this.state.password}
-            onChangeText={password_confirmation =>
-              this.setState({ password_confirmation })
+            onChangeText={text =>
+              this.setState({confirmPassword: text})
             }
             style={styles.input}
             placeholder="Confirm Password"
@@ -141,14 +132,12 @@ export default class RegisterScreen extends React.Component {
             }}
           />
           <TouchableOpacity
-            onPress={() => this.props.navigation.navigate("Main")}
+            onPress={onPress=() => this.performRegister()}
             style={styles.buttonContainer}
           >
             <Text style={styles.buttonText}>REGISTER</Text>
           </TouchableOpacity>
-          <TouchableOpacity
-            onPress={() => this.props.navigation.navigate("Login")}
-          >
+          <TouchableOpacity onPress={() => this.props.navigation.navigate("Login")}>
             <Text style={styles.buttonText}>Have Account? Login Here</Text>
           </TouchableOpacity>
         </View>

@@ -1,6 +1,7 @@
 import React from "react";
 import { StyleSheet, View, KeyboardAvoidingView, Image, TextInput, TouchableOpacity, Text, Alert, AsyncStorage } from "react-native";
 import NetInfo from '@react-native-community/netinfo';
+import axios from 'axios';
 
 export default class LoginScreen extends React.Component {
   constructor(props) {

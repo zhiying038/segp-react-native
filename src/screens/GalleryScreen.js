@@ -68,7 +68,7 @@ export default class GalleryScreen extends React.Component {
             <MaterialIcons name="arrow-back" size={25} color="white" />
           </TouchableOpacity>
           <TouchableOpacity style={styles.button} onPress={this.saveToGallery}>
-            <Text style={styles.whiteText}>Save selected to gallery</Text>
+            <Text style={styles.whiteText}>Upload</Text>
           </TouchableOpacity>
         </View>
         <ScrollView contentComponentStyle={{ flex: 1 }}>

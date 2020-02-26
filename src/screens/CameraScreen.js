@@ -1,13 +1,5 @@
 import React from 'react';
-import {
-  Alert,
-  StyleSheet,
-  Text,
-  View,
-  TouchableOpacity,
-  Slider,
-  Platform
-} from 'react-native';
+import { StyleSheet, Text, View, TouchableOpacity, Image, Platform } from 'react-native';
 import Constants from 'expo-constants';
 import { Camera } from 'expo-camera'; 
 import * as FileSystem from 'expo-file-system';
@@ -20,7 +12,6 @@ import {
   Ionicons,
   MaterialIcons,
   Foundation,
-  MaterialCommunityIcons,
   Octicons
 } from '@expo/vector-icons';
 
@@ -67,13 +58,9 @@ export default class CameraScreen extends React.Component {
     whiteBalance: 'auto',
     ratio: '16:9',
     ratios: [],
-    faceDetecting: false,
-    faces: [],
     newPhotos: false,
     permissionsGranted: false,
-    pictureSize: undefined,
-    pictureSizes: [],
-    pictureSizeId: 0,
+    pictureSize: '1:1',
     showGallery: false,
     showMoreOptions: false,
   };
@@ -114,13 +101,13 @@ export default class CameraScreen extends React.Component {
 
   setFocusDepth = depth => this.setState({ depth });
 
-//   toggleBarcodeScanning = () => this.setState({ barcodeScanning: !this.state.barcodeScanning });
-
-  toggleFaceDetection = () => this.setState({ faceDetecting: !this.state.faceDetecting });
-
-  takePicture = () => {
+  takePicture = async () => {
     if (this.camera) {
-      this.camera.takePictureAsync({ onPictureSaved: this.onPictureSaved });
+      // this.camera.takePictureAsync({ onPictureSaved: this.onPictureSaved });
+      this.camera.takePictureAsync().then(data => {
+        console.log(data);
+        this.props.navigation.navigate("Preview", {data: data});
+      })
     }
   };
 
@@ -133,9 +120,6 @@ export default class CameraScreen extends React.Component {
     });
     this.setState({ newPhotos: true });
   }
-
-  onFacesDetected = ({ faces }) => this.setState({ faces });
-  onFaceDetectionError = state => console.warn('Faces detection error:', state);
 
   collectPictureSizes = async () => {
     if (this.camera) {
@@ -168,70 +152,6 @@ export default class CameraScreen extends React.Component {
   renderGallery() {
     return <GalleryScreen onPress={this.toggleView.bind(this)} />;
   }
-
-  renderFace({ bounds, faceID, rollAngle, yawAngle }) {
-    return (
-      <View
-        key={faceID}
-        transform={[
-          { perspective: 600 },
-          { rotateZ: `${rollAngle.toFixed(0)}deg` },
-          { rotateY: `${yawAngle.toFixed(0)}deg` },
-        ]}
-        style={[
-          styles.face,
-          {
-            ...bounds.size,
-            left: bounds.origin.x,
-            top: bounds.origin.y,
-          },
-        ]}>
-        <Text style={styles.faceText}>ID: {faceID}</Text>
-        <Text style={styles.faceText}>rollAngle: {rollAngle.toFixed(0)}</Text>
-        <Text style={styles.faceText}>yawAngle: {yawAngle.toFixed(0)}</Text>
-      </View>
-    );
-  }
-
-  renderLandmarksOfFace(face) {
-    const renderLandmark = position =>
-      position && (
-        <View
-          style={[
-            styles.landmark,
-            {
-              left: position.x - landmarkSize / 2,
-              top: position.y - landmarkSize / 2,
-            },
-          ]}
-        />
-      );
-    return (
-      <View key={`landmarks-${face.faceID}`}>
-        {renderLandmark(face.leftEyePosition)}
-        {renderLandmark(face.rightEyePosition)}
-        {renderLandmark(face.leftEarPosition)}
-        {renderLandmark(face.rightEarPosition)}
-        {renderLandmark(face.leftCheekPosition)}
-        {renderLandmark(face.rightCheekPosition)}
-        {renderLandmark(face.leftMouthPosition)}
-        {renderLandmark(face.mouthPosition)}
-        {renderLandmark(face.rightMouthPosition)}
-        {renderLandmark(face.noseBasePosition)}
-        {renderLandmark(face.bottomMouthPosition)}
-      </View>
-    );
-  }
-
-  renderFaces = () => 
-    <View style={styles.facesContainer} pointerEvents="none">
-      {this.state.faces.map(this.renderFace)}
-    </View>
-
-  renderLandmarks = () => 
-    <View style={styles.facesContainer} pointerEvents="none">
-      {this.state.faces.map(this.renderLandmarksOfFace)}
-    </View>
 
   renderNoPermissions = () => 
     <View style={styles.noPermissions}>
@@ -282,11 +202,6 @@ export default class CameraScreen extends React.Component {
   renderMoreOptions = () =>
     (
       <View style={styles.options}>
-        <View style={styles.detectors}>
-          <TouchableOpacity onPress={this.toggleFaceDetection}>
-            <MaterialIcons name="tag-faces" size={32} color={this.state.faceDetecting ? "white" : "#858585" } />
-          </TouchableOpacity>
-        </View>
 
         <View style={styles.pictureSizeContainer}>
           <Text style={styles.pictureQualityLabel}>Picture quality</Text>
@@ -322,14 +237,11 @@ export default class CameraScreen extends React.Component {
           ratio={this.state.ratio}
           pictureSize={this.state.pictureSize}
           onMountError={this.handleMountError}
-          onFacesDetected={this.state.faceDetecting ? this.onFacesDetected : undefined}
-          onFaceDetectionError={this.onFaceDetectionError}
           >
           {this.renderTopBar()}
+          <Image style={styles.borderImage} source={require("../../assets/border.png")} />
           {this.renderBottomBar()}
         </Camera>
-        {this.state.faceDetecting && this.renderFaces()}
-        {this.state.faceDetecting && this.renderLandmarks()}
         {this.state.showMoreOptions && this.renderMoreOptions()}
       </View>
     );
@@ -344,6 +256,12 @@ export default class CameraScreen extends React.Component {
 }
 
 const styles = StyleSheet.create({
+  borderImage: {
+    width: 450,
+    height: 450,
+    alignContent: 'center',
+    alignSelf: 'center'
+  },
   container: {
     flex: 1,
     backgroundColor: '#000',
@@ -360,7 +278,7 @@ const styles = StyleSheet.create({
     paddingTop: Constants.statusBarHeight / 2,
   },
   bottomBar: {
-    paddingBottom: isIPhoneX ? 25 : 5,
+    paddingBottom: isIPhoneX ? 125 : 50,
     backgroundColor: 'transparent',
     alignSelf: 'flex-end',
     justifyContent: 'space-between',
@@ -443,34 +361,11 @@ const styles = StyleSheet.create({
     alignItems: 'center',
     justifyContent: 'center'
   },
-  facesContainer: {
-    position: 'absolute',
-    bottom: 0,
-    right: 0,
-    left: 0,
-    top: 0,
-  },
-  face: {
-    padding: 10,
-    borderWidth: 2,
-    borderRadius: 2,
-    position: 'absolute',
-    borderColor: '#FFD700',
-    justifyContent: 'center',
-    backgroundColor: 'rgba(0, 0, 0, 0.5)',
-  },
   landmark: {
     width: landmarkSize,
     height: landmarkSize,
     position: 'absolute',
     backgroundColor: 'red',
-  },
-  faceText: {
-    color: '#FFD700',
-    fontWeight: 'bold',
-    textAlign: 'center',
-    margin: 10,
-    backgroundColor: 'transparent',
   },
   row: {
     flexDirection: 'row',

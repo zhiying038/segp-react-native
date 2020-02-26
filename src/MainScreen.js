@@ -2,25 +2,30 @@ import React from 'react';
 import {Platform, TouchableOpacity } from 'react-native';
 import {createBottomTabNavigator} from 'react-navigation-tabs'
 import {createAppContainer} from 'react-navigation';
-import Icon from 'react-native-vector-icons/FontAwesome5';
-import HomeScreen from './screens/HomeScreen';
-import GameScreen from './screens/GameScreen';
-import LeaderboardScreen from './screens/LeaderboardScreen';
-import ProfileScreen from './screens/ProfileScreen';
+import { Octicons, SimpleLineIcons, FontAwesome5 } from 'react-native-vector-icons';
+import HomeScreen from './tabNavigators/HomeScreen';
+import GameScreen from './tabNavigators/GameScreen';
+import LeaderboardScreen from './tabNavigators/LeaderboardScreen';
+import ProfileScreen from './tabNavigators/ProfileScreen';
 
 export default class MainScreen extends React.Component {
     static navigationOptions = ({navigation}) => {
         return {
             headerLeft: () => (
-                <TouchableOpacity onPress={() => navigation.navigate("About")}>
-                    <Icon name="info-circle" size={20} style={{ paddingLeft: 20 }} />
+                <TouchableOpacity onPress={() => navigation.navigate("Camera")}>
+                    <SimpleLineIcons name="camera" size={24} style={{ paddingLeft: 20 }} />
                 </TouchableOpacity>
             ),
-            title: "Recycling",
+            title: "Recycle",
             headerRight: () => (
-              <TouchableOpacity onPress={() => navigation.navigate("Camera")}>
-                <Icon name="camera" size={20} style={{ paddingRight: 20 }} />
-              </TouchableOpacity>
+              <React.Fragment style={{flex: 1, flexDirection: 'row'}}>
+                <TouchableOpacity onPress={() => navigation.navigate("About")}>
+                  <FontAwesome5 name="info-circle" size={20} style={{ paddingRight: 20 }} />
+                </TouchableOpacity>
+                <TouchableOpacity>
+                  <Octicons name="sign-out" size={20} style={{ paddingRight: 20}} />
+                </TouchableOpacity>
+              </React.Fragment>
             )
         }
     }
@@ -37,26 +42,23 @@ const AppNavigator = createBottomTabNavigator(
     {
       Home: {
         screen: HomeScreen,
-        navigationOptions: {
-          tabBarIcon: () => <Icon name="home" size={25} />
-        }
       },
       Game: {
         screen: GameScreen,
         navigationOptions: {
-          tabBarIcon: () => <Icon name="gamepad" size={25} />
+          tabBarIcon: () => <FontAwesome5 name="gamepad" size={25} />
         }
       },
       Leaderboard: {
         screen: LeaderboardScreen,
         navigationOptions: {
-          tabBarIcon: () => <Icon name="chart-bar" size={25} />
+          tabBarIcon: () => <FontAwesome5 name="chart-bar" size={25} />
         }
       },
       Profile: {
         screen: ProfileScreen,
         navigationOptions: {
-          tabBarIcon: () => <Icon name="user" size={25} />
+          tabBarIcon: () => <FontAwesome5 name="user" size={25} />
         }
       }
     }, {
