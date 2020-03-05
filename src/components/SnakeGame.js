@@ -20,35 +20,58 @@ var state = {
   score: 0
 };
 
+/*
+// STILL TESTING //
+// for obstacle 
+var frame = 0;
+
+*/
 
 // DRAW SECTION
 // Snake
-function drawSnakePart(ctx,x,y,head=false) {
+function drawSnakePart(ctx, x, y, head = false) {
   // Set the fillstyle to green if it is head else white
   ctx.fillStyle = head ? "green":"white";
   // draw a rectangle at (x,y) coordinates with width and height of 10px
-  ctx.fillRect(x,y,10,10);
+  ctx.fillRect(x, y, 10, 10);
 }
 
 // Food
-function drawFood(ctx,x,y) {
-  // Starting Path
+function drawFood(ctx, x, y) {
   ctx.beginPath();
   ctx.fillStyle="red";
   // Circle
-  ctx.arc(x+5,y+5,5,0,2*Math.PI);
- // Closing path
+  ctx.arc(x+5, y+5, 5, 0, 2*Math.PI);
   ctx.stroke();
  // Filling area enclosed by the path
   ctx.fill();
 }
+
+/*
+// Obstacle
+function updateGameArea(){
+  frame++
+  
+  if (frame % 100 == 0) obstacle.push({width: 10, height: 10, x: canvas.width, y:canvas.height * Math.random(), speedX: 0.0, speedY: 0.0});
+ 
+  obstacles.forEach(o => {
+    o.x -= 1
+    context.fillRect(o.x, o.y, o.width, o.height);      
+  })
+
+  requestAnimationFrame(updateGameArea);
+}
+
+requestAnimationFrame(updateGameArea);
+
+*/
 
 // Draw Background
 function drawBackground(){
   // Background colour
   ctx.fillStyle="black";
   // ** Draw a rectangle at (0,0) coordinates with width and height of 250px
-  ctx.fillRect(0,0,250,250);
+  ctx.fillRect(0, 0, 250, 250);
 }
 
 // Draw Whole Snake
@@ -58,7 +81,6 @@ function drawSnake() {
     drawSnakePart(ctx,state.snake[i].x, state.snake[i].y, i === 0);
   }
 }
-
 
 
 // Game Logic
