@@ -1,52 +1,27 @@
-import React from "react";
-import { createAppContainer } from "react-navigation";
-import { createStackNavigator } from 'react-navigation-stack';
-import MainScreen from './src/MainScreen';
-import AboutScreen from './src/screens/AboutScreen';
-import LoginScreen from './src/screens/LoginScreen';
-import RegisterScreen from './src/screens/RegisterScreen';
-import ForgetPasswordScreen from "./src/screens/ForgetPasswordScreen";
-import CameraScreen from "./src/screens/CameraScreen";
+import React, { Component } from 'react';
+import Auth from './src/screens/Auth';
+import LoggedIn from './src/screens/LoggedIn';
 
-export default class App extends React.Component {
+export default class App extends Component {
+  constructor() {
+    super();
+    this.state = {
+      jwt: ''
+    };
+    this.newJWT = this.newJWT.bind(this);
+  }
+
+  newJWT(jwt) {
+    this.setState({
+      jwt: jwt
+    });
+  }
+
   render() {
-    return (
-      <AppContainer />
-    );
+    if (!this.state.jwt) {
+      return <Auth newJWT={this.newJWT} />;
+    } else if (this.state.jwt) {
+      return <LoggedIn />;
+    }
   }
 }
-
-const AppStackNavigator = createStackNavigator({
-  Login: {
-    screen: LoginScreen,
-    navigationOptions: {
-      headerShown: false
-    }
-  },
-  Register: {
-    screen: RegisterScreen,
-    navigationOptions: {
-      headerShown: false
-    }
-  },
-  ForgetPassword: {
-    screen: ForgetPasswordScreen,
-    navigationOptions: {
-      headerShown: false
-    }
-  },
-  Main: MainScreen,
-  About: AboutScreen,
-  Camera: {
-      screen: CameraScreen,
-      navigationOptions: {
-          headerShown: false
-      }
-  }
-}, {
-  initialRouteName: 'Login'
-});
-
-
-
-const AppContainer = createAppContainer(AppStackNavigator);
