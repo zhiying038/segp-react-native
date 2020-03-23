@@ -1,6 +1,6 @@
 import React, { Component } from 'react';
-import { Image, Text, View, StyleSheet, TouchableOpacity, StatusBar, TextInput, LayoutAnimation } from 'react-native';
-import { Ionicons } from '@expo/vector-icons';
+import { Image, Text, View, StyleSheet, TouchableOpacity, StatusBar, TextInput, LayoutAnimation, AsyncStorage } from 'react-native';
+import axios from 'axios';
 
 export default class SignInScreen extends Component {
     static navigationOptions = {
@@ -11,8 +11,34 @@ export default class SignInScreen extends Component {
         super(props);
         this.state = {
             email: '',
-            password: ''
+            password: '',
         };
+        this.storeToken = this.storeToken.bind(this);
+        this.handleSignIn = this.handleSignIn.bind(this);
+    }
+
+    storeToken = async (key, value) => {
+        try {
+            await AsyncStorage.setItem(key, value);
+        } catch (error) {
+            console.log(error);
+        }
+    }
+
+    handleSignIn = () => {
+        axios.post('http://157.245.205.223:8000/auth', {
+            username: this.state.email,
+            password: this.state.password
+        })
+        .then(response => { // Successfully Posted
+            alert("Successfully Signed In");
+            this.storeToken('userToken', response.data.access_token);
+            this.props.navigation.navigate('App');
+        })
+        .catch(error => {
+            alert("Sign In Failed! Try Again.");
+            console.log(error);
+        })
     }
 
     render() {
@@ -50,13 +76,13 @@ export default class SignInScreen extends Component {
                             style={styles.input}
                             secureTextEntry
                             autoCapitalize="none"
-                            onChangeText={password => this.setState({ password })}
+                            onChangeText={password => this.setState({ password: password })}
                             value={this.state.password}
                         />
                     </View>
                 </View>
 
-                <TouchableOpacity style={styles.button}>
+                <TouchableOpacity style={styles.button} onPress={this.handleSignIn}>
                     <Text style={{ color: '#FFF', fontWeight: '500' }}>Sign In</Text>
                 </TouchableOpacity>
 

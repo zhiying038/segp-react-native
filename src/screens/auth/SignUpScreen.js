@@ -19,7 +19,7 @@ export default class SignUpScreen extends Component {
     }
 
     handleSignUp = () => {
-        axios.post('http://157.245.205.223/student', {
+        axios.post('http://157.245.205.223:8000/student', {
             StudentName: this.state.fullname,
             Email: this.state.email,
             HouseID: this.state.house,
