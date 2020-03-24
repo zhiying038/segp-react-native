@@ -2,7 +2,7 @@ import React from 'react';
 import { createAppContainer, createSwitchNavigator } from 'react-navigation';
 import { createStackNavigator } from 'react-navigation-stack';
 import { createBottomTabNavigator } from 'react-navigation-tabs'
-import { Ionicons, AntDesign } from '@expo/vector-icons';
+import { Ionicons, AntDesign, FontAwesome } from '@expo/vector-icons';
 
 // Authentication Screens
 import AuthLoadingScreen from './src/screens/auth/AuthLoadingScreen';
@@ -13,6 +13,7 @@ import SignInScreen from './src/screens/auth/SignInScreen';
 import ProfileScreen from './src/screens/tabs/ProfileScreen';
 import HomeScreen from './src/screens/tabs/HomeScreen';
 import LeaderboardScreen from './src/screens/tabs/LeaderboardScreen';
+// import GameScreen from './src/screens/tabs/GameScreen';
 
 const AppStack = createBottomTabNavigator(
   {
@@ -22,6 +23,12 @@ const AppStack = createBottomTabNavigator(
         tabBarIcon: ({ tintColor }) => <Ionicons name="ios-home" size={24} color={tintColor} />
       }
     },
+    // Game: {
+    //   screen: GameScreen,
+    //   navigationOptions: {
+    //     tabBarIcon: ({ tintColor }) => <FontAwesome name="gamepad" size={24} color={tintColor} />
+    //   }
+    // },
     Leaderboard: {
       screen: LeaderboardScreen,
       navigationOptions: {
