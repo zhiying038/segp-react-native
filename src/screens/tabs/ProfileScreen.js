@@ -1,6 +1,6 @@
 import React, { Component } from 'react';
-import { View, Text, StyleSheet, ScrollView, SafeAreaView, TouchableOpacity, AsyncStorage } from 'react-native';
-import { AntDesign, Entypo } from '@expo/vector-icons';
+import { View, Text, StyleSheet, ScrollView, TouchableOpacity, AsyncStorage, Image } from 'react-native';
+import { AntDesign, Ionicons } from '@expo/vector-icons';
 import axios from 'axios';
 
 export default class ProfileScreen extends Component {
@@ -8,7 +8,12 @@ export default class ProfileScreen extends Component {
         super(props);
         this.state = {
             email: '',
-            fullname: '',
+            name: '',
+            house: '',
+            BlueRecycled: '',
+            BrownRecycled: '',
+            OrangeRecycled: '',
+            TotalRecycled: ''
         };
         this.getData = this.getData.bind(this);
         this.signOut = this.signOut.bind(this);
@@ -28,8 +33,13 @@ export default class ProfileScreen extends Component {
         .then(response => {
             const data = response.data;
             this.setState({
-                fullname: data.StudentName,
-                email: data.Email
+                name: data.StudentName,
+                email: data.Email,
+                house: data.HouseID,
+                BlueRecycled: data.BlueRecycled,
+                BrownRecycled: data.BrownRecycled,
+                OrangeRecycled: data.OrangeRecycled,
+                TotalRecycled: data.TotalRecycled
             });
         })
         .catch(error => {
@@ -45,39 +55,152 @@ export default class ProfileScreen extends Component {
 
     render() {
         return (
-            <SafeAreaView style={styles.container}>
+            <View style={styles.container}>
                 <ScrollView showsVerticalScrollIndicator={false}>
-                    <View style={styles.header}>
-                        <Entypo name="info-with-circle" size={24} />
-
+                    <View style={styles.titleBar}>
+                        <Ionicons name="ios-information-circle" size={30} color="#52575D" />
                         <TouchableOpacity onPress={this.signOut}>
-                            <AntDesign name="logout" size={24} />
+                            <AntDesign name="logout" size={24} color="#52575D" />   
                         </TouchableOpacity>
                     </View>
 
-                    <View style={styles.userinfo}>
-                        <Text style={[styles.text, { fontWeight: '200', fontSize: 36 }]}>Name: {this.state.fullname}</Text>
-                        <Text style={[styles.text, { color: '#AEB5BC', fontSize: 14 }]}>Email: {this.state.email}</Text>
+                    <View style={{ alignSelf: 'center' }}>
+                        <View style={styles.profilePic}>
+                            <Image 
+                                source={require('../../../assets/avatarPlaceholder.jpg')}
+                                style={styles.image}
+                                resizeMode="center"
+                            />
+                        </View>
+                    </View>
+
+                    <View style={styles.userInfo}>
+                        <Text style={[styles.text, { fontWeight: '200', fontSize: 36 }]}>{this.state.name}</Text>
+                        <Text style={[styles.text, { fontSize: 20 }]}>Email: {this.state.email}</Text>
+                        <Text style={[styles.text, { fontSize: 18 }]}>House: {this.state.house}</Text>
+                        <Text style={[styles.text, { color: '#AEB5BC', fontSize: 14, marginTop: 20 }]}>Student</Text>
+                    </View>
+
+                    <View style={styles.recycleStats}>
+                        <View style={[styles.totalContainer, { backgroundColor: '#DAA520' }]}>
+                            <Text style={styles.countItem}>{this.state.BlueRecycled}</Text>
+                            <Text style={[styles.countSubtext]}>Total Items Recycled</Text>
+                        </View>
+                    </View>
+
+                    <View style={{ marginTop: 32 }}>
+                        <ScrollView horizontal={true} showsHorizontalScrollIndicator={false}>
+                            <View style={[styles.categoryContainer, {backgroundColor: '#3F92D2' }]}>
+                                <Text style={styles.categoryTitle}>Paper</Text>
+                                <View>
+                                    <View style={{ alignItems: 'center' }}>
+                                        <Text style={styles.countItem}>{this.state.BlueRecycled}</Text>
+                                        <Text style={styles.countSubtext}>Items Recycled</Text>
+                                    </View>
+                                </View>
+                            </View>
+
+                            <View style={[styles.categoryContainer, {backgroundColor: '#FF7400' }]}>
+                                <Text style={styles.categoryTitle}>Aluminium & Cans</Text>
+                                <View>
+                                    <View style={{ alignItems: 'center' }}>
+                                        <Text style={styles.countItem}>{this.state.OrangeRecycled}</Text>
+                                        <Text style={styles.countSubtext}>Items Recycled</Text>
+                                    </View>
+                                </View>
+                            </View>
+
+                            <View style={[styles.categoryContainer, {backgroundColor: '#A0522D' }]}>
+                                <Text style={styles.categoryTitle}>Glass</Text>
+                                <View>
+                                    <View style={{ alignItems: 'center' }}>
+                                        <Text style={styles.countItem}>{this.state.BrownRecycled}</Text>
+                                        <Text style={styles.countSubtext}>Items Recycled</Text>
+                                    </View>
+                                </View>
+                            </View>
+                        </ScrollView>
                     </View>
                 </ScrollView>
-            </SafeAreaView>
+            </View>
         );
     }
 }
 
 const styles = StyleSheet.create({
     container: {
-        flex: 1
+        flex: 1,
+        backgroundColor: '#FFF'
     },
-    header: {
+    titleBar: {
         flexDirection: 'row',
         justifyContent: 'space-between',
-        marginTop: 40,
+        marginTop: 35,
         marginHorizontal: 16
     },
-    userinfo: {
+    profilePic: {
+        shadowColor: '#151734',
+        shadowRadius: 30,
+        shadowOpacity: 0.4
+    },
+    image: {
+        width: 136,
+        height: 136,
+        borderRadius: 68
+    },
+    userInfo: {
         alignSelf: 'center',
         alignItems: 'center',
-        marginTop: 16
+        marginTop: 10
+    },
+    text: {
+        color: '#52575D',
+    },
+    subText: {
+        fontSize: 12,
+        color: '#AEB5BC',
+        textTransform: 'uppercase',
+        fontWeight: '500'
+    },
+    recycleStats: {
+        flexDirection: 'row',
+        alignSelf: 'center',
+        marginTop: 32
+    },
+    statsBox: {
+        alignItems: 'center',
+        flex: 1
+    },
+    categoryTitle: {
+        fontSize: 24,
+        fontWeight: '700',
+        color: '#FFF',
+        marginBottom: 18
+    },
+    categoryContainer: {
+        paddingVertical: 28,
+        paddingHorizontal: 16,
+        borderRadius: 6,
+        marginHorizontal: 12,
+        alignItems: 'center',
+        width: 200
+    },
+    totalContainer: {
+        paddingVertical: 10,
+        paddingHorizontal: 16,
+        borderRadius: 6,
+        marginHorizontal: 12,
+        alignItems: 'center',
+        width: 320
+    },
+    countItem: {
+        fontSize: 48,
+        fontWeight: '200',
+        color: '#FFF'
+    },
+    countSubtext: {
+        fontSize: 20,
+        fontWeight: '700',
+        color: '#FFF'
     }
 });

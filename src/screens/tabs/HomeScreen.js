@@ -1,5 +1,5 @@
 import React, { Component } from 'react';
-import { StyleSheet, View, Text, AsyncStorage, ScrollView, ImageBackground, Dimensions } from 'react-native';
+import { StyleSheet, View, Text, ImageBackground, Dimensions } from 'react-native';
 import ScrollableTabView, { DefaultTabBar } from 'react-native-scrollable-tab-view';
 import Info from '../../components/home/Info';
 
@@ -57,8 +57,8 @@ const styles = StyleSheet.create({
         color: '#FFF',
         marginTop: 20,
         fontWeight: 'bold',
-        fontSize: 25,
-        marginRight: 20
+        fontSize: 20,
+        marginRight: 5
     },
     tabBar: {
         flex: 1,

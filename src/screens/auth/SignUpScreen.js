@@ -2,6 +2,8 @@ import React, { Component } from 'react';
 import { Image, Text, View, StyleSheet, TouchableOpacity, StatusBar, TextInput } from 'react-native';
 import { Ionicons } from '@expo/vector-icons';
 import axios from 'axios';
+import * as ImagePicker from 'expo-image-picker';
+import * as Permissions from 'expo-permissions';
 
 export default class SignUpScreen extends Component {
     static navigationOptions = {
@@ -15,8 +17,33 @@ export default class SignUpScreen extends Component {
             email: '',
             house: '',
             password: '',
+            avatar: null,
+            galleryPermission: false
         };
     }
+
+    async componentDidMount() {
+        const permission = await Permissions.getAsync(Permissions.CAMERA_ROLL);
+        if (permission.status !== 'granted') {
+            const newPermission = await Permissions.getAsync(Permissions.CAMERA_ROLL);
+            if (newPermission.status === 'granted') {
+                this.setState({ galleryPermission: true });
+            }
+        } else {
+            this.setState({ galleryPermission: true });
+        }
+    }
+
+    handlePickAvatar = async () => {
+        let result = await ImagePicker.launchImageLibraryAsync({
+            mediaTypes: ImagePicker.MediaTypeOptions.Images,
+            allowsEditing: true,
+            aspect: [4, 3]
+        });
+        if (!result.cancelled) {
+            this.setState({ avatar: result.uri });
+        }
+    };
 
     handleSignUp = () => {
         axios.post('http://157.245.205.223:8000/student', {
@@ -33,7 +60,7 @@ export default class SignUpScreen extends Component {
         .catch(error => {
             console.log(error);
         })
-    }
+    };
     
     render() {
         return (
@@ -55,6 +82,10 @@ export default class SignUpScreen extends Component {
 
                 <View style={{ position: 'absolute', top: 64, alignItems: 'center', width: '100%' }}>
                     <Text style={styles.greeting}>{`Hello!\nSign up to get started!`}</Text>
+                    <TouchableOpacity style={styles.avatarPlaceholder} onPress={this.handlePickAvatar}>
+                        <Image source={{ uri: this.state.avatar }} style={styles.avatar} />
+                        <Ionicons name="ios-add" size={40} color="#FFF" style={{ marginTop: 6, marginLeft: 2}} /> 
+                    </TouchableOpacity>
                 </View>
 
                 <View style={styles.form}>
@@ -141,7 +172,7 @@ const styles = StyleSheet.create({
     form: {
         marginBottom: 48,
         marginHorizontal: 30,
-        marginTop: -50
+        marginTop: 15
     },
     title: {
         color: '#8A8F9E',
@@ -162,5 +193,20 @@ const styles = StyleSheet.create({
         height: 48,
         alignItems: 'center',
         justifyContent: 'center'
+    },
+    avatarPlaceholder: {
+        width: 100,
+        height: 100,
+        backgroundColor: '#E1E2E6',
+        borderRadius: 50,
+        marginTop: 20,
+        justifyContent: 'center',
+        alignItems: 'center'
+    },
+    avatar: {
+        position: 'absolute',
+        width: 100,
+        height: 100,
+        borderRadius: 50
     }
 });
