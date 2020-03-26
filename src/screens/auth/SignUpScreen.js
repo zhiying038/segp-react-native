@@ -1,5 +1,5 @@
 import React, { Component } from 'react';
-import { Image, Text, View, StyleSheet, TouchableOpacity, StatusBar, TextInput } from 'react-native';
+import { Image, Text, View, StyleSheet, TouchableOpacity, StatusBar, TextInput, Picker } from 'react-native';
 import { Ionicons } from '@expo/vector-icons';
 import axios from 'axios';
 import * as ImagePicker from 'expo-image-picker';
@@ -15,10 +15,11 @@ export default class SignUpScreen extends Component {
         this.state = {
             fullname: '',
             email: '',
-            house: '',
+            house: 'Red',
             password: '',
             avatar: null,
-            galleryPermission: false
+            galleryPermission: false,
+            avatarUrl: ''
         };
     }
 
@@ -38,10 +39,14 @@ export default class SignUpScreen extends Component {
         let result = await ImagePicker.launchImageLibraryAsync({
             mediaTypes: ImagePicker.MediaTypeOptions.Images,
             allowsEditing: true,
-            aspect: [4, 3]
+            aspect: [4, 3],
+            base64: true
         });
         if (!result.cancelled) {
             this.setState({ avatar: result.uri });
+            const base64avatar = `data:image/jpg;base64,${result.base64}`;
+            this.setState({ avatarUrl: base64avatar });
+            console.log(this.state.avatar);
         }
     };
 
@@ -50,10 +55,10 @@ export default class SignUpScreen extends Component {
             StudentName: this.state.fullname,
             Email: this.state.email,
             HouseID: this.state.house,
-            Password: this.state.password
+            Password: this.state.password,
         })
         .then(response => {
-            console.log(response);
+            console.log(response.data);
             alert("You have signed up successfully.");
             this.props.navigation.navigate("SignIn");
         })
@@ -111,12 +116,22 @@ export default class SignUpScreen extends Component {
 
                     <View style={{ marginTop: 32 }}>
                         <Text style={styles.title}>Sport House</Text>
-                        <TextInput
+                        <Picker
+                            selectedValue={this.state.house}
+                            style={{ height: 50, width: 150 }}
+                            onValueChange={(itemValue, itemIndex) => this.setState({ house: itemValue })}
+                        >
+                            <Picker.Item label="Red" value="red" />
+                            <Picker.Item label="Blue" value="blue" />
+                            <Picker.Item label="Yellow" value="yellow" />
+                            <Picker.Item label="Green" value="green" />
+                        </Picker>
+                        {/* <TextInput
                             style={styles.input}
                             autoCapitalize="none"
                             onChangeText={house => this.setState({ house: house })}
                             value={this.state.house}
-                        />
+                        /> */}
                     </View>
 
                     <View style={{ marginTop: 32 }}>
