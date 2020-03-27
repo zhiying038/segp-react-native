@@ -13,7 +13,8 @@ import SignInScreen from './src/screens/auth/SignInScreen';
 import ProfileScreen from './src/screens/tabs/ProfileScreen';
 import HomeScreen from './src/screens/tabs/HomeScreen';
 import LeaderboardScreen from './src/screens/tabs/LeaderboardScreen';
-// import GameScreen from './src/screens/tabs/GameScreen';
+import GameScreen from './src/screens/tabs/GameScreen';
+import CameraScreen from './src/screens/tabs/CameraScreen';
 
 const AppStack = createBottomTabNavigator(
   {
@@ -23,12 +24,18 @@ const AppStack = createBottomTabNavigator(
         tabBarIcon: ({ tintColor }) => <Ionicons name="ios-home" size={24} color={tintColor} />
       }
     },
-    // Game: {
-    //   screen: GameScreen,
-    //   navigationOptions: {
-    //     tabBarIcon: ({ tintColor }) => <FontAwesome name="gamepad" size={24} color={tintColor} />
-    //   }
-    // },
+    Game: {
+      screen: GameScreen,
+      navigationOptions: {
+        tabBarIcon: ({ tintColor }) => <FontAwesome name="gamepad" size={24} color={tintColor} />
+      }
+    },
+    Camera: {
+      screen: CameraScreen,
+      navigationOptions: {
+        tabBarIcon: ({ tintColor }) => <AntDesign name="camera" size={24} color={tintColor} />,
+      }
+    },
     Leaderboard: {
       screen: LeaderboardScreen,
       navigationOptions: {
