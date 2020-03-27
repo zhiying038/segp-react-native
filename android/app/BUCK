@@ -50,7 +50,15 @@ android_build_config(
 
 android_resource(
     name = "res",
+<<<<<<< HEAD
     package = "com.recycling",
+=======
+<<<<<<< HEAD
+    package = "com.reactnativesegp",
+=======
+    package = "com.recycling",
+>>>>>>> 594c0c2a8be8d0ce64a7d1e7dc3f4a26e351914b
+>>>>>>> 2c3b9e0c37fc247ac4bf471c819f5c2e30e655b6
     res = "src/main/res",
 )
 
