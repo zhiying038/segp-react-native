@@ -42,9 +42,11 @@ export default class CameraScreen extends Component {
 
     capturePicture = () => {
         if (this.camera) {
-            this.camera.takePictureAsync()
+            this.camera.takePictureAsync({
+                base64: true
+            })
             .then((image) => {
-                this.props.navigation.navigate("Preview", { photo: image.uri })
+                this.props.navigation.navigate("previewModal", { photo: image.uri, base64Img: image.base64 })
             });
         }
     }
@@ -151,12 +153,10 @@ const styles = StyleSheet.create({
     },
     back: {
         position: 'absolute',
-        top: 48,
-        left: 32,
+        top: 40,
+        left: 20,
         width: 32,
         height: 32,
-        borderRadius: 16,
-        backgroundColor: 'rgba(21, 22, 48, 0.1)',
         alignItems: 'center',
         justifyContent: 'center'
     }

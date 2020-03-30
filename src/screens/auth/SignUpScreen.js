@@ -1,5 +1,5 @@
 import React, { Component } from 'react';
-import { Image, Text, View, StyleSheet, TouchableOpacity, StatusBar, TextInput, Picker } from 'react-native';
+import { Image, Text, View, StyleSheet, TouchableOpacity, StatusBar, TextInput, Picker, Alert } from 'react-native';
 import { Ionicons } from '@expo/vector-icons';
 import axios from 'axios';
 import * as ImagePicker from 'expo-image-picker';
@@ -42,6 +42,7 @@ export default class SignUpScreen extends Component {
             aspect: [4, 3],
             base64: true
         });
+        
         if (!result.cancelled) {
             this.setState({ avatar: result.uri });
             const base64avatar = `data:image/jpg;base64,${result.base64}`;
@@ -49,17 +50,26 @@ export default class SignUpScreen extends Component {
         }
     };
 
-    handleSignUp = () => {
+    validateCredentials = () => {
+        if (this.state.fullname === "" || this.state.email === "" ||  this.state.password === "") {
+            alert("Please enter all credentials.");
+        } else {
+            this.handleSignUp(this.state.fullname, this.state.email, this.state.house, this.state.password);
+        }
+    }
+
+    handleSignUp = (name, email, house, password) => {
         axios.post('http://157.245.205.223:8000/student', {
-            StudentName: this.state.fullname,
-            Email: this.state.email,
-            HouseID: this.state.house,
-            Password: this.state.password,
+            StudentName: name,
+            Email: email,
+            HouseID: house,
+            Password: password,
         })
         .then(response => {
-            console.log(response.data);
-            alert("You have signed up successfully.");
-            this.props.navigation.navigate("SignIn");
+            if (response.status >= 200 && response.status < 300) {
+                alert("You have signed up successfully.");
+                this.props.navigation.navigate("SignIn");
+            } 
         })
         .catch(error => {
             console.log(error);
@@ -139,7 +149,7 @@ export default class SignUpScreen extends Component {
                     </View>
                 </View>
 
-                <TouchableOpacity style={styles.button} onPress={this.handleSignUp}>
+                <TouchableOpacity style={styles.button} onPress={this.validateCredentials}>
                         <Text style={{ color: '#FFF', fontWeight: '500' }}>Sign Up</Text>
                 </TouchableOpacity>
 

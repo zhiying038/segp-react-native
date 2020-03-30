@@ -1,6 +1,7 @@
 import React, { Component } from 'react';
-import { View, Text, StyleSheet, ScrollView, TouchableOpacity, AsyncStorage, Image } from 'react-native';
+import { View, Text, StyleSheet, ScrollView, TouchableOpacity, AsyncStorage, Image, Modal } from 'react-native';
 import { AntDesign, Ionicons } from '@expo/vector-icons';
+import AboutModal from '../../components/AboutModal';
 import axios from 'axios';
 
 export default class ProfileScreen extends Component {
@@ -13,7 +14,8 @@ export default class ProfileScreen extends Component {
             BlueRecycled: '',
             BrownRecycled: '',
             OrangeRecycled: '',
-            TotalRecycled: ''
+            TotalRecycled: '',
+            visible: false
         };
         this.getData = this.getData.bind(this);
         this.signOut = this.signOut.bind(this);
@@ -51,15 +53,29 @@ export default class ProfileScreen extends Component {
         await AsyncStorage.clear();
         alert("You have signed out!");
         this.props.navigation.navigate("Auth");
+    };
+
+    modalVisible = () => {
+        this.setState({
+            visible: !this.state.visible
+        });
     }
 
     render() {
         const { navigation } = this.props;
         return (
             <View style={styles.container}>
+                <Modal 
+                    animationType="slide" 
+                    visible={this.state.visible} 
+                    onRequestClose={() => this.modalVisible()}
+                >
+                    <AboutModal closeModal={() => this.modalVisible()} />
+                </Modal>
+
                 <ScrollView showsVerticalScrollIndicator={false}>
                     <View style={styles.titleBar}>
-                        <TouchableOpacity>
+                        <TouchableOpacity onPress={this.modalVisible}>
                             <Ionicons name="ios-information-circle" size={24} color="#52575D" />  
                         </TouchableOpacity>
                         <TouchableOpacity onPress={this.signOut}>

@@ -1,6 +1,8 @@
 import React, { Component } from 'react';
 import { View, StyleSheet, Image, Dimensions, TouchableOpacity } from 'react-native';
 import { Ionicons, AntDesign } from '@expo/vector-icons';
+import * as Permissions from 'expo-permissions';
+import * as ImagePicker from 'expo-image-picker';
 import axios from 'axios';
 
 const window = Dimensions.get('window').width;
@@ -17,13 +19,10 @@ export default class PreviewScreen extends Component {
         };
     }
 
-    handleRecycle = async () => {
-        const token = await AsyncStorage.getItem('userToken');
-        axios.post('http://157.245.205.223:8000/recycle', {
-            headers: {
-                'Authorization': `JWT ${token}`
-            }
-        })
+    uploadImage = () => {
+        const uri = this.props.navigation.getParam('base64Img');
+        this.setState({ image: uri });
+        
     }
 
     render() {
@@ -35,7 +34,7 @@ export default class PreviewScreen extends Component {
                     <Ionicons name="ios-arrow-round-back" size={32} color="#FFF" />
                 </TouchableOpacity>
 
-                <TouchableOpacity style={styles.upload}>
+                <TouchableOpacity style={styles.upload} onPress={this.uploadImage}>
                     <AntDesign name="upload" size={24} color="#FFF" />
                 </TouchableOpacity>
 

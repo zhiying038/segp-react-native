@@ -15,7 +15,7 @@ import HomeScreen from './src/screens/tabs/HomeScreen';
 import LeaderboardScreen from './src/screens/tabs/LeaderboardScreen';
 import GameScreen from './src/screens/tabs/GameScreen';
 
-// Camera
+// Camera Modal
 import CameraScreen from './src/screens/camera/CameraScreen';
 import PreviewScreen from './src/screens/camera/PreviewScreen';
 
@@ -72,11 +72,11 @@ const AppContainer = createStackNavigator(
       }
     ),
     cameraModal: {
-      screen: createStackNavigator({
-        Camera: CameraScreen,
-        Preview: PreviewScreen
-      })
+      screen: CameraScreen
     },
+    previewModal: {
+      screen: PreviewScreen
+    }
   },
   {
     mode: 'modal',
