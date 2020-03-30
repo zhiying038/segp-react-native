@@ -18,6 +18,10 @@ const flashIcons = {
 };
 
 export default class CameraScreen extends Component {
+    static navigationOptions = {
+        headerShown: false
+    };
+
     state = {
         image: null,
         hasPermission: null,
@@ -40,8 +44,7 @@ export default class CameraScreen extends Component {
         if (this.camera) {
             this.camera.takePictureAsync()
             .then((image) => {
-                console.log(image);
-                this.props.navigation.navigate("PreviewScreen", { uri: image.uri })
+                this.props.navigation.navigate("Preview", { photo: image.uri })
             });
         }
     }
@@ -59,6 +62,10 @@ export default class CameraScreen extends Component {
     renderTopbar = () => {
         return (
             <View style={styles.topbar}>
+                <TouchableOpacity style={styles.back} onPress={() => this.props.navigation.goBack()}>
+                    <Ionicons name="ios-arrow-round-back" size={32} color="#FFF" />
+                </TouchableOpacity>
+
                 <TouchableOpacity style={styles.button} onPress={this.toggleFlash}>
                     <MaterialIcons name={flashIcons[this.state.flash]} size={32} color="#FFF" />
                 </TouchableOpacity>
@@ -123,8 +130,7 @@ const styles = StyleSheet.create({
         marginBottom: 10,
         marginTop: 20,
         padding: 5,
-        alignItems: 'center',
-        justifyContent: 'center'
+        right: -165
     },
     noPermission: {
         flex: 1,
@@ -142,5 +148,16 @@ const styles = StyleSheet.create({
         justifyContent: 'space-between',
         flex: 0.12, 
         flexDirection: 'row'
+    },
+    back: {
+        position: 'absolute',
+        top: 48,
+        left: 32,
+        width: 32,
+        height: 32,
+        borderRadius: 16,
+        backgroundColor: 'rgba(21, 22, 48, 0.1)',
+        alignItems: 'center',
+        justifyContent: 'center'
     }
 });

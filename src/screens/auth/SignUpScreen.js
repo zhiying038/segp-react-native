@@ -46,7 +46,6 @@ export default class SignUpScreen extends Component {
             this.setState({ avatar: result.uri });
             const base64avatar = `data:image/jpg;base64,${result.base64}`;
             this.setState({ avatarUrl: base64avatar });
-            console.log(this.state.avatar);
         }
     };
 
@@ -126,12 +125,6 @@ export default class SignUpScreen extends Component {
                             <Picker.Item label="Yellow" value="yellow" />
                             <Picker.Item label="Green" value="green" />
                         </Picker>
-                        {/* <TextInput
-                            style={styles.input}
-                            autoCapitalize="none"
-                            onChangeText={house => this.setState({ house: house })}
-                            value={this.state.house}
-                        /> */}
                     </View>
 
                     <View style={{ marginTop: 32 }}>

@@ -1,5 +1,6 @@
 import React, { Component } from 'react';
 import { StyleSheet, View, Text, ImageBackground, Dimensions } from 'react-native';
+import { AntDesign } from '@expo/vector-icons';
 import ScrollableTabView, { DefaultTabBar } from 'react-native-scrollable-tab-view';
 import Info from '../../components/home/Info';
 
@@ -22,6 +23,7 @@ export default class HomeScreen extends Component {
                         <Text style={styles.title}>HOME</Text>
                     </ImageBackground>
                 </View>
+
 
                 <View style={styles.tabBar}>
                     <ScrollableTabView

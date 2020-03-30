@@ -54,11 +54,14 @@ export default class ProfileScreen extends Component {
     }
 
     render() {
+        const { navigation } = this.props;
         return (
             <View style={styles.container}>
                 <ScrollView showsVerticalScrollIndicator={false}>
                     <View style={styles.titleBar}>
-                        <Ionicons name="ios-information-circle" size={30} color="#52575D" />
+                        <TouchableOpacity>
+                            <Ionicons name="ios-information-circle" size={24} color="#52575D" />  
+                        </TouchableOpacity>
                         <TouchableOpacity onPress={this.signOut}>
                             <AntDesign name="logout" size={24} color="#52575D" />   
                         </TouchableOpacity>
@@ -83,7 +86,7 @@ export default class ProfileScreen extends Component {
 
                     <View style={styles.recycleStats}>
                         <View style={[styles.totalContainer, { backgroundColor: '#DAA520' }]}>
-                            <Text style={styles.countItem}>{this.state.BlueRecycled}</Text>
+                            <Text style={styles.countItem}>{this.state.TotalRecycled}</Text>
                             <Text style={[styles.countSubtext]}>Total Items Recycled</Text>
                         </View>
                     </View>
