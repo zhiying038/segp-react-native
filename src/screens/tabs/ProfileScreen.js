@@ -11,11 +11,12 @@ export default class ProfileScreen extends Component {
             email: '',
             name: '',
             house: '',
+            visible: false,
             BlueRecycled: '',
             BrownRecycled: '',
             OrangeRecycled: '',
             TotalRecycled: '',
-            visible: false
+            Avatar: '',
         };
         this.getData = this.getData.bind(this);
         this.signOut = this.signOut.bind(this);
@@ -41,7 +42,8 @@ export default class ProfileScreen extends Component {
                 BlueRecycled: data.BlueRecycled,
                 BrownRecycled: data.BrownRecycled,
                 OrangeRecycled: data.OrangeRecycled,
-                TotalRecycled: data.TotalRecycled
+                TotalRecycled: data.TotalRecycled,
+                Avatar: data.Avatar
             });
         })
         .catch(error => {
@@ -86,7 +88,10 @@ export default class ProfileScreen extends Component {
                     <View style={{ alignSelf: 'center' }}>
                         <View style={styles.profilePic}>
                             <Image 
-                                source={require('../../../assets/avatarPlaceholder.jpg')}
+                                source={
+                                    this.state.Avatar 
+                                        ? { uri: `data:image/jpg;base64,${this.state.Avatar}` } 
+                                        : require('../../../assets/avatarPlaceholder.jpg')}
                                 style={styles.image}
                                 resizeMode="center"
                             />

@@ -19,7 +19,7 @@ export default class SignUpScreen extends Component {
             password: '',
             avatar: null,
             galleryPermission: false,
-            avatarUrl: ''
+            errorMessage: ''
         };
     }
 
@@ -45,8 +45,6 @@ export default class SignUpScreen extends Component {
         
         if (!result.cancelled) {
             this.setState({ avatar: result.uri });
-            const base64avatar = `data:image/jpg;base64,${result.base64}`;
-            this.setState({ avatarUrl: base64avatar });
         }
     };
 
@@ -54,16 +52,17 @@ export default class SignUpScreen extends Component {
         if (this.state.fullname === "" || this.state.email === "" ||  this.state.password === "") {
             alert("Please enter all credentials.");
         } else {
-            this.handleSignUp(this.state.fullname, this.state.email, this.state.house, this.state.password);
+            this.handleSignUp(this.state.fullname, this.state.email, this.state.house, this.state.password, this.state.avatar);
         }
     }
 
-    handleSignUp = (name, email, house, password) => {
+    handleSignUp = (name, email, house, password, avatar) => {
         axios.post('http://157.245.205.223:8000/student', {
             StudentName: name,
             Email: email,
             HouseID: house,
             Password: password,
+            Avatar: avatar
         })
         .then(response => {
             if (response.status >= 200 && response.status < 300) {
@@ -73,6 +72,11 @@ export default class SignUpScreen extends Component {
         })
         .catch(error => {
             console.log(error);
+            if (error.response.status === 403) {
+                this.setState({ errorMessage: "Email Address is not Unique" });
+            } else if (error.response.status === 400) {
+                this.setState({ errorMessage: "Please make sure all fields are not empty"});
+            }
         })
     };
     
