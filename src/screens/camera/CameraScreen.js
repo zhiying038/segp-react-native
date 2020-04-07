@@ -31,7 +31,13 @@ export default class CameraScreen extends Component {
 
     async componentDidMount() {
         const { status } = await Permissions.askAsync(Permissions.CAMERA);
-        this.setState({ hasPermission: status === 'granted' });
+
+        if (status !== 'granted') {
+            const { status } = await Permissions.getAsync(Permissions.CAMERA);
+            this.setState({ hasPermission: status === 'granted' });
+        } else {
+            this.setState({ hasPermission: status === 'granted' });
+        }
     }
 
     toggleFlash = () => {

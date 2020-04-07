@@ -1,5 +1,5 @@
 import React, { Component } from 'react';
-import { View, StyleSheet, Image, Dimensions, TouchableOpacity } from 'react-native';
+import { View, StyleSheet, Image, Dimensions, TouchableOpacity, AsyncStorage } from 'react-native';
 import { Ionicons, AntDesign } from '@expo/vector-icons';
 import axios from 'axios';
 
@@ -13,8 +13,48 @@ export default class PreviewScreen extends Component {
     constructor(props) {
         super(props);
         this.state = {
-            image: ''
+            image: '',
+            prediction: '',
         };
+        this.handlePrediction = this.handlePrediction.bind(this);
+    }
+
+    handlePrediction = async () => {
+        const token = await AsyncStorage.getItem('userToken');
+        const imageUrl = this.props.navigation.getParam('base64Img');
+        this.setState({
+            image: imageUrl,
+        });
+
+        axios.post('http://157.245.205.223:8000/predict', {
+            recycable_image: this.state.image
+        }, {
+            headers: {
+                'Authorization': `JWT ${token}`
+            }
+        })
+        .then(response => {
+            const data = response.data;
+            this.setState({
+                prediction: data.prediction
+            });
+            alert(`Uploaded Successfully.\nIt is ${this.state.prediction}.`);
+        })
+        .catch(error => {
+            console.log(error);
+        })
+
+        axios.post('http://157.245.205.223:8000/recycle', {timeout: 60000}, {
+            headers: {
+                'Authorization': `JWT ${token}`
+            }
+        })
+        .then(response => {
+            console.log(response.data);
+        })
+        .catch(error => {
+            console.log(error);
+        })
     }
 
     render() {
@@ -26,7 +66,7 @@ export default class PreviewScreen extends Component {
                     <Ionicons name="ios-arrow-round-back" size={32} color="#FFF" />
                 </TouchableOpacity>
 
-                <TouchableOpacity style={styles.upload}>
+                <TouchableOpacity style={styles.upload} onPress={this.handlePrediction}>
                     <AntDesign name="upload" size={24} color="#FFF" />
                 </TouchableOpacity>
 

@@ -47,7 +47,7 @@ const styles = StyleSheet.create({
         backgroundColor: 'white'
     },
     header: {
-        marginTop: 15.5,
+        marginTop: -15,
         position: 'absolute'
     },
     imageBackground: {

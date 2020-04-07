@@ -1,5 +1,9 @@
 import React, { Component } from 'react';
-import { View, Text, StyleSheet, TouchableOpacity, AsyncStorage, ImageBackground, Dimensions } from 'react-native';
+import { View, StyleSheet, ImageBackground, Dimensions, Text } from 'react-native';
+import ScrollableTabView, { DefaultTabBar } from 'react-native-scrollable-tab-view';
+import Houses from '../../components/leaderboard/Houses';
+import Recycle from '../../components/leaderboard/Recycle';
+import Student from '../../components/leaderboard/Student';
 
 const width = Dimensions.get('screen').width;
 
@@ -10,27 +14,46 @@ export default class LeaderboardScreen extends Component {
                 <View style={styles.header}>
                     <ImageBackground
                         source={require('../../../assets/homeHeader.png')}
-                        style={styles.background}
+                        style={styles.ImageBackground}
                         resizeMode="contain"
                     >
                         <Text style={styles.title}>LEADERBOARD</Text>
                     </ImageBackground>
                 </View>
+
+                <View style={styles.tabbar}>
+                    <ScrollableTabView
+                        style={{ marginTop: 5 }}
+                        initialPage={0}
+                        tabBarActiveTextColor="green"
+                        renderTabBar={() => <DefaultTabBar />}
+                    >
+                        <Houses tabLabel="Houses" props={this.props} />
+                        <Recycle tabLabel="Items" props={this.props} />
+                        <Student tabLabel="Student" prop={this.props} />
+                    </ScrollableTabView>
+                </View>
             </View>
-        );
+        )
     }
 }
 
 const styles = StyleSheet.create({
     container: {
         flex: 1,
-        backgroundColor: 'white'
+        backgroundColor: '#FFF'
     },
     header: {
-        marginTop: 15.5,
+        marginTop: -15,
         position: 'absolute'
     },
-    background: {
+    tabbar: {
+        flex: 1,
+        marginTop: width * 0.3,
+        paddingEnd: 2,
+        paddingStart: 2
+    },
+    ImageBackground: {
         width: width * 0.4,
         height: width * 0.4,
         alignItems: 'center'
@@ -41,5 +64,5 @@ const styles = StyleSheet.create({
         fontWeight: 'bold',
         fontSize: 20,
         marginRight: 5
-    },
-});
+    }
+})

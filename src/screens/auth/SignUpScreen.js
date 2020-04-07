@@ -17,21 +17,21 @@ export default class SignUpScreen extends Component {
             email: '',
             house: 'Red',
             password: '',
+            errorMessage: '',
             avatar: null,
-            galleryPermission: false,
-            errorMessage: ''
+            avatarbase64: "",
+            hasPermission: false
         };
     }
 
     async componentDidMount() {
-        const permission = await Permissions.getAsync(Permissions.CAMERA_ROLL);
-        if (permission.status !== 'granted') {
-            const newPermission = await Permissions.getAsync(Permissions.CAMERA_ROLL);
-            if (newPermission.status === 'granted') {
-                this.setState({ galleryPermission: true });
-            }
+        const { status } = await Permissions.getAsync(Permissions.CAMERA_ROLL);
+
+        if (status !== 'granted') {
+            const { status } = await Permissions.getAsync(Permissions.CAMERA_ROLL);
+            this.setState({ hasPermission: status === 'granted' });
         } else {
-            this.setState({ galleryPermission: true });
+            this.setState({ hasPermission: status === 'granted' });
         }
     }
 
@@ -44,7 +44,10 @@ export default class SignUpScreen extends Component {
         });
         
         if (!result.cancelled) {
-            this.setState({ avatar: result.uri });
+            this.setState({
+                avatar: result.uri,
+                avatarbase64: result.base64
+            })
         }
     };
 
@@ -52,17 +55,17 @@ export default class SignUpScreen extends Component {
         if (this.state.fullname === "" || this.state.email === "" ||  this.state.password === "") {
             alert("Please enter all credentials.");
         } else {
-            this.handleSignUp(this.state.fullname, this.state.email, this.state.house, this.state.password, this.state.avatar);
+            this.handleSignUp();
         }
     }
 
-    handleSignUp = (name, email, house, password, avatar) => {
+    handleSignUp = () => {
         axios.post('http://157.245.205.223:8000/student', {
-            StudentName: name,
-            Email: email,
-            HouseID: house,
-            Password: password,
-            Avatar: avatar
+            StudentName: this.state.fullname,
+            Email: this.state.email,
+            HouseID: this.state.house,
+            Password: this.state.password,
+            Avatar: this.state.avatarbase64
         })
         .then(response => {
             if (response.status >= 200 && response.status < 300) {
@@ -73,7 +76,7 @@ export default class SignUpScreen extends Component {
         .catch(error => {
             console.log(error);
             if (error.response.status === 403) {
-                this.setState({ errorMessage: "Email Address is not Unique" });
+                this.setState({ errorMessage: "Email Address has been Used" });
             } else if (error.response.status === 400) {
                 this.setState({ errorMessage: "Please make sure all fields are not empty"});
             }
@@ -104,6 +107,10 @@ export default class SignUpScreen extends Component {
                         <Image source={{ uri: this.state.avatar }} style={styles.avatar} />
                         <Ionicons name="ios-add" size={40} color="#FFF" style={{ marginTop: 6, marginLeft: 2}} /> 
                     </TouchableOpacity>
+                </View>
+
+                <View style={styles.errorMessage}>
+                    <Text style={styles.error}>{this.state.errorMessage}</Text>
                 </View>
 
                 <View style={styles.form}>
@@ -175,7 +182,7 @@ const styles = StyleSheet.create({
         flex: 1
     },
     greeting: {
-        marginTop: 32,
+        marginTop: -30,
         fontSize: 18,
         fontWeight: '400',
         textAlign: 'center'
@@ -192,9 +199,9 @@ const styles = StyleSheet.create({
         justifyContent: 'center'
     },
     form: {
-        marginBottom: 48,
+        marginBottom: 30,
         marginHorizontal: 30,
-        marginTop: 15
+        marginTop: -45
     },
     title: {
         color: '#8A8F9E',
@@ -230,5 +237,18 @@ const styles = StyleSheet.create({
         width: 100,
         height: 100,
         borderRadius: 50
+    },
+    errorMessage: {
+        height: 72,
+        alignItems: 'center',
+        justifyContent: 'center',
+        marginHorizontal: 30,
+        top: -50
+    },
+    error: {
+        fontSize: 13,
+        fontWeight: '600',
+        textAlign: 'center',
+        color: 'red'
     }
 });
