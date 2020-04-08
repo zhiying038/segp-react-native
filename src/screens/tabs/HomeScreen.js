@@ -1,5 +1,6 @@
 import React, { Component } from 'react';
 import { StyleSheet, View, Text, ImageBackground, Dimensions } from 'react-native';
+import { AntDesign } from '@expo/vector-icons';
 import ScrollableTabView, { DefaultTabBar } from 'react-native-scrollable-tab-view';
 import Info from '../../components/home/Info';
 
@@ -23,6 +24,7 @@ export default class HomeScreen extends Component {
                     </ImageBackground>
                 </View>
 
+
                 <View style={styles.tabBar}>
                     <ScrollableTabView
                         initialPage={0}
@@ -45,7 +47,7 @@ const styles = StyleSheet.create({
         backgroundColor: 'white'
     },
     header: {
-        marginTop: 15.5,
+        marginTop: -15,
         position: 'absolute'
     },
     imageBackground: {

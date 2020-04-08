@@ -1,6 +1,8 @@
 import React, { Component } from 'react';
-import { View, Text, StyleSheet, ScrollView, TouchableOpacity, AsyncStorage, Image } from 'react-native';
+import { View, Text, StyleSheet, ScrollView, TouchableOpacity, AsyncStorage, Image, Modal } from 'react-native';
 import { AntDesign, Ionicons } from '@expo/vector-icons';
+import AboutModal from '../../components/AboutModal';
+import * as ImagePicker from 'expo-image-picker';
 import axios from 'axios';
 
 export default class ProfileScreen extends Component {
@@ -10,13 +12,18 @@ export default class ProfileScreen extends Component {
             email: '',
             name: '',
             house: '',
+            visible: false,
             BlueRecycled: '',
             BrownRecycled: '',
             OrangeRecycled: '',
-            TotalRecycled: ''
+            TotalRecycled: '',
+            Avatar: '',
         };
         this.getData = this.getData.bind(this);
         this.signOut = this.signOut.bind(this);
+        this.changeAvatar = this.changeAvatar.bind(this);
+        this.modalVisible = this.modalVisible.bind(this);
+        this.capitaliseFirstLetter = this.capitaliseFirstLetter.bind(this);
     }
 
     componentDidMount() {
@@ -39,7 +46,8 @@ export default class ProfileScreen extends Component {
                 BlueRecycled: data.BlueRecycled,
                 BrownRecycled: data.BrownRecycled,
                 OrangeRecycled: data.OrangeRecycled,
-                TotalRecycled: data.TotalRecycled
+                TotalRecycled: data.TotalRecycled,
+                Avatar: data.Avatar
             });
         })
         .catch(error => {
@@ -51,14 +59,67 @@ export default class ProfileScreen extends Component {
         await AsyncStorage.clear();
         alert("You have signed out!");
         this.props.navigation.navigate("Auth");
-    }
+    };
+
+    modalVisible = () => {
+        this.setState({
+            visible: !this.state.visible
+        });
+    };
+
+    changeAvatar = async () => {
+        let result = await ImagePicker.launchImageLibraryAsync({
+            mediaTypes: ImagePicker.MediaTypeOptions.Images,
+            allowsEditing: true,
+            aspect: [4, 3],
+            base64: true
+        });
+        
+        if (!result.cancelled) {
+            this.setState({ 
+                Avatar: result.base64
+            });
+        } else {
+            alert("You have not changed your profile picture.");
+        }
+
+        const token = await AsyncStorage.getItem('userToken');
+        axios.post('http://157.245.205.223:8000/profile_pic', {
+            Avatar: this.state.Avatar
+        }, {
+            headers: {
+                'Authorization': `JWT ${token}`
+            }
+        })
+        .then(response => {
+            alert("You've changed your profile picture.");
+        })
+        .catch(error => {
+            console.log(error);
+        })
+    };
+
+    capitaliseFirstLetter = str => {
+        return str.charAt(0).toUpperCase() + str.slice(1);
+    };
 
     render() {
+        const { navigation } = this.props;
         return (
             <View style={styles.container}>
+                <Modal 
+                    animationType="slide" 
+                    visible={this.state.visible} 
+                    onRequestClose={() => this.modalVisible()}
+                >
+                    <AboutModal closeModal={() => this.modalVisible()} />
+                </Modal>
+
                 <ScrollView showsVerticalScrollIndicator={false}>
                     <View style={styles.titleBar}>
-                        <Ionicons name="ios-information-circle" size={30} color="#52575D" />
+                        <TouchableOpacity onPress={this.modalVisible}>
+                            <Ionicons name="ios-information-circle" size={24} color="#52575D" />  
+                        </TouchableOpacity>
                         <TouchableOpacity onPress={this.signOut}>
                             <AntDesign name="logout" size={24} color="#52575D" />   
                         </TouchableOpacity>
@@ -67,23 +128,38 @@ export default class ProfileScreen extends Component {
                     <View style={{ alignSelf: 'center' }}>
                         <View style={styles.profilePic}>
                             <Image 
-                                source={require('../../../assets/avatarPlaceholder.jpg')}
+                                source={
+                                    this.state.Avatar
+                                        ? { uri: `data:image/jpg;base64,${this.state.Avatar}` } 
+                                        : require('../../../assets/avatarPlaceholder.jpg')
+                                    }
                                 style={styles.image}
-                                resizeMode="center"
+                                resizeMode="cover"
                             />
+                        </View>
+
+                        <View style={styles.changePic}>
+                            <TouchableOpacity onPress={this.changeAvatar}>
+                                <Ionicons 
+                                    name="ios-add" 
+                                    size={16} 
+                                    color="#DFD8C8" 
+                                    style={{ marginTop: 1, marginLeft: 1 }} 
+                                />
+                            </TouchableOpacity>
                         </View>
                     </View>
 
                     <View style={styles.userInfo}>
                         <Text style={[styles.text, { fontWeight: '200', fontSize: 36 }]}>{this.state.name}</Text>
                         <Text style={[styles.text, { fontSize: 20 }]}>Email: {this.state.email}</Text>
-                        <Text style={[styles.text, { fontSize: 18 }]}>House: {this.state.house}</Text>
+                        <Text style={[styles.text, { fontSize: 18 }]}>House: {this.capitaliseFirstLetter(this.state.house)}</Text>
                         <Text style={[styles.text, { color: '#AEB5BC', fontSize: 14, marginTop: 20 }]}>Student</Text>
                     </View>
 
                     <View style={styles.recycleStats}>
                         <View style={[styles.totalContainer, { backgroundColor: '#DAA520' }]}>
-                            <Text style={styles.countItem}>{this.state.BlueRecycled}</Text>
+                            <Text style={styles.countItem}>{this.state.TotalRecycled}</Text>
                             <Text style={[styles.countSubtext]}>Total Items Recycled</Text>
                         </View>
                     </View>
@@ -135,7 +211,7 @@ const styles = StyleSheet.create({
     titleBar: {
         flexDirection: 'row',
         justifyContent: 'space-between',
-        marginTop: 35,
+        marginTop: 15,
         marginHorizontal: 16
     },
     profilePic: {
@@ -202,5 +278,17 @@ const styles = StyleSheet.create({
         fontSize: 20,
         fontWeight: '700',
         color: '#FFF'
+    },
+    changePic: {
+        backgroundColor: '#414448',
+        position: 'absolute',
+        top: 95,
+        bottom: 0,
+        right: 5,
+        width: 20,
+        height: 20,
+        borderRadius: 30,
+        alignItems: 'center',
+        justifyContent: 'center'
     }
 });

@@ -18,6 +18,10 @@ const flashIcons = {
 };
 
 export default class CameraScreen extends Component {
+    static navigationOptions = {
+        headerShown: false
+    };
+
     state = {
         image: null,
         hasPermission: null,
@@ -27,7 +31,13 @@ export default class CameraScreen extends Component {
 
     async componentDidMount() {
         const { status } = await Permissions.askAsync(Permissions.CAMERA);
-        this.setState({ hasPermission: status === 'granted' });
+
+        if (status !== 'granted') {
+            const { status } = await Permissions.getAsync(Permissions.CAMERA);
+            this.setState({ hasPermission: status === 'granted' });
+        } else {
+            this.setState({ hasPermission: status === 'granted' });
+        }
     }
 
     toggleFlash = () => {
@@ -38,10 +48,11 @@ export default class CameraScreen extends Component {
 
     capturePicture = () => {
         if (this.camera) {
-            this.camera.takePictureAsync()
+            this.camera.takePictureAsync({
+                base64: true
+            })
             .then((image) => {
-                console.log(image);
-                this.props.navigation.navigate("PreviewScreen", { uri: image.uri })
+                this.props.navigation.navigate("previewModal", { photo: image.uri, base64Img: image.base64 })
             });
         }
     }
@@ -59,6 +70,10 @@ export default class CameraScreen extends Component {
     renderTopbar = () => {
         return (
             <View style={styles.topbar}>
+                <TouchableOpacity style={styles.back} onPress={() => this.props.navigation.goBack()}>
+                    <Ionicons name="ios-arrow-round-back" size={32} color="#FFF" />
+                </TouchableOpacity>
+
                 <TouchableOpacity style={styles.button} onPress={this.toggleFlash}>
                     <MaterialIcons name={flashIcons[this.state.flash]} size={32} color="#FFF" />
                 </TouchableOpacity>
@@ -123,8 +138,7 @@ const styles = StyleSheet.create({
         marginBottom: 10,
         marginTop: 20,
         padding: 5,
-        alignItems: 'center',
-        justifyContent: 'center'
+        right: -165
     },
     noPermission: {
         flex: 1,
@@ -142,5 +156,14 @@ const styles = StyleSheet.create({
         justifyContent: 'space-between',
         flex: 0.12, 
         flexDirection: 'row'
+    },
+    back: {
+        position: 'absolute',
+        top: 40,
+        left: 20,
+        width: 32,
+        height: 32,
+        alignItems: 'center',
+        justifyContent: 'center'
     }
 });

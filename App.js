@@ -14,49 +14,75 @@ import ProfileScreen from './src/screens/tabs/ProfileScreen';
 import HomeScreen from './src/screens/tabs/HomeScreen';
 import LeaderboardScreen from './src/screens/tabs/LeaderboardScreen';
 import GameScreen from './src/screens/tabs/GameScreen';
-import CameraScreen from './src/screens/tabs/CameraScreen';
 
-const AppStack = createBottomTabNavigator(
+// Camera Modal
+import CameraScreen from './src/screens/camera/CameraScreen';
+import PreviewScreen from './src/screens/camera/PreviewScreen';
+
+const AppContainer = createStackNavigator(
   {
-    Home: {
-      screen: HomeScreen,
-      navigationOptions: {
-        tabBarIcon: ({ tintColor }) => <Ionicons name="ios-home" size={24} color={tintColor} />
+    default: createBottomTabNavigator(
+      {
+        Home: {
+          screen: HomeScreen,
+          navigationOptions: {
+            tabBarIcon: ({ tintColor }) => <Ionicons name="ios-home" size={24} color={tintColor} />
+          }
+        },
+        Game: {
+          screen: GameScreen,
+          navigationOptions: {
+            tabBarIcon: ({ tintColor }) => <FontAwesome name="gamepad" size={24} color={tintColor} />
+          }
+        },
+        Camera: {
+          screen: CameraScreen,
+          navigationOptions: {
+            tabBarIcon: ({ tintColor }) => <AntDesign name="camera" size={24} color={tintColor} />
+          }
+        },
+        Leaderboard: {
+          screen: LeaderboardScreen,
+          navigationOptions: {
+            tabBarIcon: ({ tintColor }) => <AntDesign name="barschart" size={24} color={tintColor} />
+          }
+        },
+        Profile: {
+          screen: ProfileScreen,
+          navigationOptions: {
+            tabBarIcon: ({ tintColor }) => <Ionicons name="ios-person" size={24} color={tintColor} />
+          }
+        }
+      }, 
+      {
+        defaultNavigationOptions: {
+          tabBarOnPress: ({ navigation, defaultHandler }) => {
+            if (navigation.state.key === "Camera") {
+              navigation.navigate("cameraModal");
+            } else {
+              defaultHandler();
+            }
+          }
+        },
+        tabBarOptions: {
+          activeTintColor: '#161F3D',
+          inactiveTintColor: '#B8BBC4',
+          showLabel: false,
+        },
       }
+    ),
+    cameraModal: {
+      screen: CameraScreen
     },
-    Game: {
-      screen: GameScreen,
-      navigationOptions: {
-        tabBarIcon: ({ tintColor }) => <FontAwesome name="gamepad" size={24} color={tintColor} />
-      }
-    },
-    Camera: {
-      screen: CameraScreen,
-      navigationOptions: {
-        tabBarIcon: ({ tintColor }) => <AntDesign name="camera" size={24} color={tintColor} />,
-      }
-    },
-    Leaderboard: {
-      screen: LeaderboardScreen,
-      navigationOptions: {
-        tabBarIcon: ({ tintColor }) => <AntDesign name="barschart" size={24} color={tintColor} />
-      }
-    },
-    Profile: {
-      screen: ProfileScreen,
-      navigationOptions: {
-        tabBarIcon: ({ tintColor }) => <Ionicons name="ios-person" size={24} color={tintColor} />
-      }
+    previewModal: {
+      screen: PreviewScreen
     }
-  }, 
+  },
   {
-    tabBarOptions: {
-      activeTintColor: '#161F3D',
-      inactiveTintColor: '#B8BBC4',
-      showLabel: false
-    }
+    mode: 'modal',
+    headerMode: 'none'
   }
-)
+);
 
 const AuthStack = createStackNavigator({
   SignIn: SignInScreen,
@@ -68,7 +94,7 @@ export default createAppContainer(
     {
       AuthLoading: AuthLoadingScreen,
       Auth: AuthStack,
-      App: AppStack
+      App: AppContainer,
     },
     {
       initialRouteName: 'AuthLoading'

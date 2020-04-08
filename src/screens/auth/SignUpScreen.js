@@ -1,5 +1,5 @@
 import React, { Component } from 'react';
-import { Image, Text, View, StyleSheet, TouchableOpacity, StatusBar, TextInput, Picker } from 'react-native';
+import { Image, Text, View, StyleSheet, TouchableOpacity, StatusBar, TextInput, Picker, Alert } from 'react-native';
 import { Ionicons } from '@expo/vector-icons';
 import axios from 'axios';
 import * as ImagePicker from 'expo-image-picker';
@@ -17,21 +17,21 @@ export default class SignUpScreen extends Component {
             email: '',
             house: 'Red',
             password: '',
+            errorMessage: '',
             avatar: null,
-            galleryPermission: false,
-            avatarUrl: ''
+            avatarbase64: "",
+            hasPermission: false
         };
     }
 
     async componentDidMount() {
-        const permission = await Permissions.getAsync(Permissions.CAMERA_ROLL);
-        if (permission.status !== 'granted') {
-            const newPermission = await Permissions.getAsync(Permissions.CAMERA_ROLL);
-            if (newPermission.status === 'granted') {
-                this.setState({ galleryPermission: true });
-            }
+        const { status } = await Permissions.getAsync(Permissions.CAMERA_ROLL);
+
+        if (status !== 'granted') {
+            const { status } = await Permissions.getAsync(Permissions.CAMERA_ROLL);
+            this.setState({ hasPermission: status === 'granted' });
         } else {
-            this.setState({ galleryPermission: true });
+            this.setState({ hasPermission: status === 'granted' });
         }
     }
 
@@ -42,13 +42,24 @@ export default class SignUpScreen extends Component {
             aspect: [4, 3],
             base64: true
         });
+        
         if (!result.cancelled) {
-            this.setState({ avatar: result.uri });
-            const base64avatar = `data:image/jpg;base64,${result.base64}`;
-            this.setState({ avatarUrl: base64avatar });
-            console.log(this.state.avatar);
+            this.setState({
+                avatar: result.uri,
+                avatarbase64: result.base64
+            })
+        } else {
+            alert("You have not added any photos.");
         }
     };
+
+    validateCredentials = () => {
+        if (this.state.fullname === "" || this.state.email === "" ||  this.state.password === "") {
+            alert("Please enter all credentials.");
+        } else {
+            this.handleSignUp();
+        }
+    }
 
     handleSignUp = () => {
         axios.post('http://157.245.205.223:8000/student', {
@@ -56,14 +67,21 @@ export default class SignUpScreen extends Component {
             Email: this.state.email,
             HouseID: this.state.house,
             Password: this.state.password,
+            Avatar: this.state.avatarbase64
         })
         .then(response => {
-            console.log(response.data);
-            alert("You have signed up successfully.");
-            this.props.navigation.navigate("SignIn");
+            if (response.status >= 200 && response.status < 300) {
+                alert("You have signed up successfully.");
+                this.props.navigation.navigate("SignIn");
+            } 
         })
         .catch(error => {
             console.log(error);
+            if (error.response.status === 403) {
+                this.setState({ errorMessage: "Email Address has been Used" });
+            } else if (error.response.status === 400) {
+                this.setState({ errorMessage: "Please make sure all fields are not empty"});
+            }
         })
     };
     
@@ -91,6 +109,10 @@ export default class SignUpScreen extends Component {
                         <Image source={{ uri: this.state.avatar }} style={styles.avatar} />
                         <Ionicons name="ios-add" size={40} color="#FFF" style={{ marginTop: 6, marginLeft: 2}} /> 
                     </TouchableOpacity>
+                </View>
+
+                <View style={styles.errorMessage}>
+                    <Text style={styles.error}>{this.state.errorMessage}</Text>
                 </View>
 
                 <View style={styles.form}>
@@ -126,12 +148,6 @@ export default class SignUpScreen extends Component {
                             <Picker.Item label="Yellow" value="yellow" />
                             <Picker.Item label="Green" value="green" />
                         </Picker>
-                        {/* <TextInput
-                            style={styles.input}
-                            autoCapitalize="none"
-                            onChangeText={house => this.setState({ house: house })}
-                            value={this.state.house}
-                        /> */}
                     </View>
 
                     <View style={{ marginTop: 32 }}>
@@ -146,7 +162,7 @@ export default class SignUpScreen extends Component {
                     </View>
                 </View>
 
-                <TouchableOpacity style={styles.button} onPress={this.handleSignUp}>
+                <TouchableOpacity style={styles.button} onPress={this.validateCredentials}>
                         <Text style={{ color: '#FFF', fontWeight: '500' }}>Sign Up</Text>
                 </TouchableOpacity>
 
@@ -168,7 +184,7 @@ const styles = StyleSheet.create({
         flex: 1
     },
     greeting: {
-        marginTop: 32,
+        marginTop: -30,
         fontSize: 18,
         fontWeight: '400',
         textAlign: 'center'
@@ -185,9 +201,9 @@ const styles = StyleSheet.create({
         justifyContent: 'center'
     },
     form: {
-        marginBottom: 48,
+        marginBottom: 30,
         marginHorizontal: 30,
-        marginTop: 15
+        marginTop: -45
     },
     title: {
         color: '#8A8F9E',
@@ -223,5 +239,18 @@ const styles = StyleSheet.create({
         width: 100,
         height: 100,
         borderRadius: 50
+    },
+    errorMessage: {
+        height: 72,
+        alignItems: 'center',
+        justifyContent: 'center',
+        marginHorizontal: 30,
+        top: -50
+    },
+    error: {
+        fontSize: 13,
+        fontWeight: '600',
+        textAlign: 'center',
+        color: 'red'
     }
 });

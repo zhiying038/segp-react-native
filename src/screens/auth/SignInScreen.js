@@ -12,9 +12,11 @@ export default class SignInScreen extends Component {
         this.state = {
             email: '',
             password: '',
+            errorMessage: null,
         };
         this.storeToken = this.storeToken.bind(this);
         this.handleSignIn = this.handleSignIn.bind(this);
+        this.validateCredentials = this.validateCredentials.bind(this);
     }
 
     storeToken = async (key, value) => {
@@ -25,19 +27,35 @@ export default class SignInScreen extends Component {
         }
     }
 
+    validateCredentials = () => {
+        if (this.state.email === "" || this.state.password === "") {
+            alert("Please enter all credentials.");
+        } else {
+            this.handleSignIn();
+        }
+    }
+
     handleSignIn = () => {
         axios.post('http://157.245.205.223:8000/auth', {
             username: this.state.email,
             password: this.state.password
         })
-        .then(response => { // Successfully Posted
-            alert("Successfully Signed In");
+        .then(response => { 
             this.storeToken('userToken', response.data.access_token);
-            this.props.navigation.navigate('App');
+            if (response.status >= 200 && response.status < 300) {
+                this.storeToken('userToken', response.data.access_token);
+                this.props.navigation.navigate('App');
+            } 
         })
         .catch(error => {
-            alert("Sign In Failed! Try Again.");
             console.log(error);
+            if (error.response) {
+                if (error.response.status >= 400 && error.response.status < 500) {
+                    this.setState({
+                        errorMessage: "Invalid Credentials or You Do Not Have an Account."
+                    });
+                } 
+            }
         })
     }
 
@@ -57,6 +75,10 @@ export default class SignInScreen extends Component {
                 />
 
                 <Text style={styles.greeting}>{`Hello.\nWelcome.`}</Text>
+
+                <View style={styles.errorMessage}>
+                    {this.state.errorMessage && <Text style={styles.error}>{this.state.errorMessage}</Text>}
+                </View>
 
                 <View style={styles.form}>
                     <View>
@@ -82,7 +104,7 @@ export default class SignInScreen extends Component {
                     </View>
                 </View>
 
-                <TouchableOpacity style={styles.button} onPress={this.handleSignIn}>
+                <TouchableOpacity style={styles.button} onPress={this.validateCredentials}>
                     <Text style={{ color: '#FFF', fontWeight: '500' }}>Sign In</Text>
                 </TouchableOpacity>
 
@@ -133,5 +155,17 @@ const styles = StyleSheet.create({
         height: 52,
         alignItems: 'center',
         justifyContent: 'center'
+    },
+    errorMessage: {
+        height: 72,
+        alignItems: 'center',
+        justifyContent: 'center',
+        marginHorizontal: 30
+    },
+    error: {
+        color: 'red',
+        fontSize: 13,
+        fontWeight: '600',
+        textAlign: 'center'
     }
 });
