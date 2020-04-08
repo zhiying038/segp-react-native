@@ -48,6 +48,8 @@ export default class SignUpScreen extends Component {
                 avatar: result.uri,
                 avatarbase64: result.base64
             })
+        } else {
+            alert("You have not added any photos.");
         }
     };
 

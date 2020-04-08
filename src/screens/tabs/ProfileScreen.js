@@ -12,7 +12,6 @@ export default class ProfileScreen extends Component {
             email: '',
             name: '',
             house: '',
-            newAvatar: '',
             visible: false,
             BlueRecycled: '',
             BrownRecycled: '',
@@ -24,6 +23,7 @@ export default class ProfileScreen extends Component {
         this.signOut = this.signOut.bind(this);
         this.changeAvatar = this.changeAvatar.bind(this);
         this.modalVisible = this.modalVisible.bind(this);
+        this.capitaliseFirstLetter = this.capitaliseFirstLetter.bind(this);
     }
 
     componentDidMount() {
@@ -79,6 +79,8 @@ export default class ProfileScreen extends Component {
             this.setState({ 
                 Avatar: result.base64
             });
+        } else {
+            alert("You have not changed your profile picture.");
         }
 
         const token = await AsyncStorage.getItem('userToken');
@@ -95,7 +97,7 @@ export default class ProfileScreen extends Component {
         .catch(error => {
             console.log(error);
         })
-    }
+    };
 
     capitaliseFirstLetter = str => {
         return str.charAt(0).toUpperCase() + str.slice(1);
