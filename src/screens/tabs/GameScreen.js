@@ -1,3 +1,4 @@
+import 'react-native-get-random-values';
 import React, { Component } from 'react';
 import { View, Text, StyleSheet } from 'react-native';
 
