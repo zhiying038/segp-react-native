@@ -1,5 +1,6 @@
 import React, { Component } from 'react';
 import { Image, Text, View, StyleSheet, TouchableOpacity, StatusBar, TextInput, LayoutAnimation, AsyncStorage } from 'react-native';
+import { MaterialIcons } from '@expo/vector-icons';
 import axios from 'axios';
 
 export default class SignInScreen extends Component {
@@ -13,10 +14,13 @@ export default class SignInScreen extends Component {
             email: '',
             password: '',
             errorMessage: null,
+            showPassword: false,
+            passwordIcon: 'visibility-off'
         };
         this.storeToken = this.storeToken.bind(this);
         this.handleSignIn = this.handleSignIn.bind(this);
         this.validateCredentials = this.validateCredentials.bind(this);
+        this.togglePassword = this.togglePassword.bind(this);
     }
 
     storeToken = async (key, value) => {
@@ -59,6 +63,20 @@ export default class SignInScreen extends Component {
         })
     }
 
+    togglePassword = () => {
+        if (this.state.showPassword) {
+            this.setState({
+                passwordIcon: 'visibility',
+                showPassword: !this.state.showPassword
+            });
+        } else {
+            this.setState({
+                passwordIcon: 'visibility-off',
+                showPassword: !this.state.showPassword
+            });
+        }
+    }
+
     render() {
         LayoutAnimation.easeInEaseOut();
         return (
@@ -96,10 +114,16 @@ export default class SignInScreen extends Component {
                         <Text style={styles.title}>Password</Text>
                         <TextInput
                             style={styles.input}
-                            secureTextEntry
+                            secureTextEntry={this.state.showPassword}
                             autoCapitalize="none"
                             onChangeText={password => this.setState({ password: password })}
                             value={this.state.password}
+                        />
+                        <MaterialIcons 
+                            name={this.state.passwordIcon} 
+                            size={24} 
+                            onPress={this.togglePassword}
+                            style={styles.icon}
                         />
                     </View>
                 </View>
@@ -167,5 +191,10 @@ const styles = StyleSheet.create({
         fontSize: 13,
         fontWeight: '600',
         textAlign: 'center'
+    },
+    icon: {
+        position: 'absolute',
+        right: 5,
+        top: 25
     }
 });

@@ -1,6 +1,6 @@
 import React, { Component } from 'react';
-import { Image, Text, View, StyleSheet, TouchableOpacity, StatusBar, TextInput, Picker, Alert } from 'react-native';
-import { Ionicons } from '@expo/vector-icons';
+import { Image, Text, View, StyleSheet, TouchableOpacity, StatusBar, TextInput, Picker } from 'react-native';
+import { Ionicons, MaterialIcons } from '@expo/vector-icons';
 import axios from 'axios';
 import * as ImagePicker from 'expo-image-picker';
 import * as Permissions from 'expo-permissions';
@@ -20,8 +20,14 @@ export default class SignUpScreen extends Component {
             errorMessage: '',
             avatar: null,
             avatarbase64: "",
-            hasPermission: false
+            hasPermission: false,
+            showPassword: false,
+            passwordIcon: 'visibility-off'
         };
+        this.handlePickAvatar = this.handlePickAvatar.bind(this);
+        this.validateCredentials = this.validateCredentials.bind(this);
+        this.handleSignUp = this.handleSignUp.bind(this);
+        this.togglePassword = this.togglePassword.bind(this);
     }
 
     async componentDidMount() {
@@ -84,6 +90,20 @@ export default class SignUpScreen extends Component {
             }
         })
     };
+
+    togglePassword = () => {
+        if (this.state.showPassword) {
+            this.setState({
+                passwordIcon: 'visibility',
+                showPassword: !this.state.showPassword
+            });
+        } else {
+            this.setState({
+                passwordIcon: 'visibility-off',
+                showPassword: !this.state.showPassword
+            });
+        }
+    }
     
     render() {
         return (
@@ -154,10 +174,16 @@ export default class SignUpScreen extends Component {
                         <Text style={styles.title}>Password</Text>
                         <TextInput
                             style={styles.input}
-                            secureTextEntry
+                            secureTextEntry={this.state.showPassword}
                             autoCapitalize="none"
                             onChangeText={password => this.setState({ password: password })}
                             value={this.state.password}
+                        />
+                        <MaterialIcons 
+                            name={this.state.passwordIcon} 
+                            size={24} 
+                            onPress={this.togglePassword}
+                            style={styles.icon}
                         />
                     </View>
                 </View>
@@ -252,5 +278,10 @@ const styles = StyleSheet.create({
         fontWeight: '600',
         textAlign: 'center',
         color: 'red'
+    },
+    icon: {
+        position: 'absolute',
+        right: 5,
+        top: 25
     }
 });
