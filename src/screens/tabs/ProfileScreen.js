@@ -23,7 +23,6 @@ export default class ProfileScreen extends Component {
         this.signOut = this.signOut.bind(this);
         this.changeAvatar = this.changeAvatar.bind(this);
         this.modalVisible = this.modalVisible.bind(this);
-        this.capitaliseFirstLetter = this.capitaliseFirstLetter.bind(this);
     }
 
     componentDidMount() {
@@ -99,10 +98,6 @@ export default class ProfileScreen extends Component {
         })
     };
 
-    capitaliseFirstLetter = str => {
-        return str.charAt(0).toUpperCase() + str.slice(1);
-    };
-
     render() {
         const { navigation } = this.props;
         return (
@@ -153,7 +148,7 @@ export default class ProfileScreen extends Component {
                     <View style={styles.userInfo}>
                         <Text style={[styles.text, { fontWeight: '200', fontSize: 36 }]}>{this.state.name}</Text>
                         <Text style={[styles.text, { fontSize: 20 }]}>Email: {this.state.email}</Text>
-                        <Text style={[styles.text, { fontSize: 18 }]}>House: {this.capitaliseFirstLetter(this.state.house)}</Text>
+                        <Text style={[styles.text, { fontSize: 18 }]}>House: {this.state.house}</Text>
                         <Text style={[styles.text, { color: '#AEB5BC', fontSize: 14, marginTop: 20 }]}>Student</Text>
                     </View>
 

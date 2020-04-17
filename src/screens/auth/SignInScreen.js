@@ -1,5 +1,5 @@
 import React, { Component } from 'react';
-import { Image, Text, View, StyleSheet, TouchableOpacity, StatusBar, TextInput, LayoutAnimation, AsyncStorage } from 'react-native';
+import { Image, Text, View, StyleSheet, TouchableOpacity, StatusBar, TextInput, LayoutAnimation, AsyncStorage, KeyboardAvoidingView, Keyboard, TouchableWithoutFeedback } from 'react-native';
 import { MaterialIcons } from '@expo/vector-icons';
 import axios from 'axios';
 
@@ -14,7 +14,7 @@ export default class SignInScreen extends Component {
             email: '',
             password: '',
             errorMessage: null,
-            showPassword: false,
+            showPassword: true,
             passwordIcon: 'visibility-off'
         };
         this.storeToken = this.storeToken.bind(this);
@@ -99,33 +99,37 @@ export default class SignInScreen extends Component {
                 </View>
 
                 <View style={styles.form}>
-                    <View>
-                        <Text style={styles.title}>Email Address</Text>
-                        <TextInput
-                            style={styles.input}
-                            autoCapitalize="none"
-                            keyboardType="email-address"
-                            onChangeText={email => this.setState({ email: email })}
-                            value={this.state.email}
-                        />
-                    </View>
+                    <TouchableWithoutFeedback onPress={() => Keyboard.dismiss()}>
+                        <View>
+                            <Text style={styles.title}>Email Address</Text>
+                            <TextInput
+                                style={styles.input}
+                                autoCapitalize="none"
+                                keyboardType="email-address"
+                                onChangeText={email => this.setState({ email: email })}
+                                value={this.state.email}
+                            />
+                        </View>
+                    </TouchableWithoutFeedback>
 
-                    <View style={{ marginTop: 32 }}>
-                        <Text style={styles.title}>Password</Text>
-                        <TextInput
-                            style={styles.input}
-                            secureTextEntry={this.state.showPassword}
-                            autoCapitalize="none"
-                            onChangeText={password => this.setState({ password: password })}
-                            value={this.state.password}
-                        />
-                        <MaterialIcons 
-                            name={this.state.passwordIcon} 
-                            size={24} 
-                            onPress={this.togglePassword}
-                            style={styles.icon}
-                        />
-                    </View>
+                    <TouchableWithoutFeedback onPress={() => Keyboard.dismiss()}>
+                        <View style={{ marginTop: 20 }}>
+                            <Text style={styles.title}>Password</Text>
+                            <TextInput
+                                style={styles.input}
+                                secureTextEntry={this.state.showPassword}
+                                autoCapitalize="none"
+                                onChangeText={password => this.setState({ password: password })}
+                                value={this.state.password}
+                            />
+                            <MaterialIcons 
+                                name={this.state.passwordIcon} 
+                                size={24} 
+                                onPress={this.togglePassword}
+                                style={styles.icon}
+                            />
+                        </View>
+                    </TouchableWithoutFeedback>
                 </View>
 
                 <TouchableOpacity style={styles.button} onPress={this.validateCredentials}>
@@ -150,13 +154,13 @@ const styles = StyleSheet.create({
         flex: 1
     },
     greeting: {
-        marginTop: -32,
+        marginTop: -50,
         fontSize: 18,
         fontWeight: '400',
         textAlign: 'center'
     },
     form: {
-        marginTop: 40,
+        marginTop: 10,
         marginBottom: 48,
         marginHorizontal: 30
     },
@@ -187,9 +191,9 @@ const styles = StyleSheet.create({
         marginHorizontal: 30
     },
     error: {
-        color: 'red',
-        fontSize: 13,
-        fontWeight: '600',
+        color: '#800000',
+        fontSize: 16,
+        fontWeight: 'bold',
         textAlign: 'center'
     },
     icon: {

@@ -1,5 +1,5 @@
 import React, { Component } from 'react';
-import { Image, Text, View, StyleSheet, TouchableOpacity, StatusBar, TextInput, Picker } from 'react-native';
+import { Image, Text, View, StyleSheet, TouchableOpacity, StatusBar, TextInput, Picker, Keyboard, TouchableWithoutFeedback } from 'react-native';
 import { Ionicons, MaterialIcons } from '@expo/vector-icons';
 import axios from 'axios';
 import * as ImagePicker from 'expo-image-picker';
@@ -21,7 +21,7 @@ export default class SignUpScreen extends Component {
             avatar: null,
             avatarbase64: "",
             hasPermission: false,
-            showPassword: false,
+            showPassword: true,
             passwordIcon: 'visibility-off'
         };
         this.handlePickAvatar = this.handlePickAvatar.bind(this);
@@ -123,8 +123,7 @@ export default class SignUpScreen extends Component {
                     <Ionicons name="ios-arrow-round-back" size={32} color="#FFF" />
                 </TouchableOpacity>
 
-                <View style={{ position: 'absolute', top: 64, alignItems: 'center', width: '100%' }}>
-                    <Text style={styles.greeting}>{`Hello!\nSign up to get started!`}</Text>
+                <View style={{ position: 'absolute', alignItems: 'center', width: '100%' }}>
                     <TouchableOpacity style={styles.avatarPlaceholder} onPress={this.handlePickAvatar}>
                         <Image source={{ uri: this.state.avatar }} style={styles.avatar} />
                         <Ionicons name="ios-add" size={40} color="#FFF" style={{ marginTop: 6, marginLeft: 2}} /> 
@@ -136,56 +135,62 @@ export default class SignUpScreen extends Component {
                 </View>
 
                 <View style={styles.form}>
-                    <View>
-                        <Text style={styles.title}>Full Name</Text>
-                        <TextInput
-                            style={styles.input}
-                            onChangeText={name => this.setState({ fullname: name })}
-                            value={this.state.name}
-                        />
-                    </View>
+                    <TouchableWithoutFeedback onPress={() => Keyboard.dismiss()}>
+                        <View>
+                            <Text style={styles.title}>Full Name</Text>
+                            <TextInput
+                                style={styles.input}
+                                onChangeText={name => this.setState({ fullname: name })}
+                                value={this.state.name}
+                            />
+                        </View>
+                    </TouchableWithoutFeedback>
 
-                    <View style={{ marginTop: 32 }}>
-                        <Text style={styles.title}>Email Address</Text>
-                        <TextInput
-                            style={styles.input}
-                            autoCapitalize="none"
-                            onChangeText={email => this.setState({ email: email })}
-                            value={this.state.email}
-                            keyboardType="email-address"
-                        />
-                    </View>
+                    <TouchableWithoutFeedback onPress={() => Keyboard.dismiss()}>
+                        <View style={{ marginTop: 20 }}>
+                            <Text style={styles.title}>Email Address</Text>
+                            <TextInput
+                                style={styles.input}
+                                autoCapitalize="none"
+                                onChangeText={email => this.setState({ email: email })}
+                                value={this.state.email}
+                                keyboardType="email-address"
+                            />
+                        </View>
+                    </TouchableWithoutFeedback>
 
-                    <View style={{ marginTop: 32 }}>
+                    <View style={{ marginTop: 20 }}>
                         <Text style={styles.title}>Sport House</Text>
                         <Picker
                             selectedValue={this.state.house}
                             style={{ height: 50, width: 150 }}
                             onValueChange={(itemValue, itemIndex) => this.setState({ house: itemValue })}
                         >
-                            <Picker.Item label="Red" value="red" />
-                            <Picker.Item label="Blue" value="blue" />
-                            <Picker.Item label="Yellow" value="yellow" />
-                            <Picker.Item label="Green" value="green" />
+                            <Picker.Item label="Red" value="1" />
+                            <Picker.Item label="Blue" value="2" />
+                            <Picker.Item label="Yellow" value="3" />
+                            <Picker.Item label="Green" value="4" />
                         </Picker>
                     </View>
 
-                    <View style={{ marginTop: 32 }}>
-                        <Text style={styles.title}>Password</Text>
-                        <TextInput
-                            style={styles.input}
-                            secureTextEntry={this.state.showPassword}
-                            autoCapitalize="none"
-                            onChangeText={password => this.setState({ password: password })}
-                            value={this.state.password}
-                        />
-                        <MaterialIcons 
-                            name={this.state.passwordIcon} 
-                            size={24} 
-                            onPress={this.togglePassword}
-                            style={styles.icon}
-                        />
-                    </View>
+                    <TouchableWithoutFeedback onPress={() => Keyboard.dismiss()}>
+                        <View style={{ marginTop: 20 }}>
+                            <Text style={styles.title}>Password</Text>
+                            <TextInput
+                                style={styles.input}
+                                secureTextEntry={this.state.showPassword}
+                                autoCapitalize="none"
+                                onChangeText={password => this.setState({ password: password })}
+                                value={this.state.password}
+                            />
+                            <MaterialIcons 
+                                name={this.state.passwordIcon} 
+                                size={24} 
+                                onPress={this.togglePassword}
+                                style={styles.icon}
+                            />
+                        </View>
+                    </TouchableWithoutFeedback>
                 </View>
 
                 <TouchableOpacity style={styles.button} onPress={this.validateCredentials}>
@@ -209,12 +214,6 @@ const styles = StyleSheet.create({
     container: {
         flex: 1
     },
-    greeting: {
-        marginTop: -30,
-        fontSize: 18,
-        fontWeight: '400',
-        textAlign: 'center'
-    },
     back: {
         position: 'absolute',
         top: 48,
@@ -229,7 +228,7 @@ const styles = StyleSheet.create({
     form: {
         marginBottom: 30,
         marginHorizontal: 30,
-        marginTop: -45
+        marginTop: -140
     },
     title: {
         color: '#8A8F9E',
@@ -271,13 +270,13 @@ const styles = StyleSheet.create({
         alignItems: 'center',
         justifyContent: 'center',
         marginHorizontal: 30,
-        top: -50
+        top: -150
     },
     error: {
-        fontSize: 13,
-        fontWeight: '600',
+        fontSize: 16,
+        fontWeight: 'bold',
         textAlign: 'center',
-        color: 'red'
+        color: '#800000'
     },
     icon: {
         position: 'absolute',
