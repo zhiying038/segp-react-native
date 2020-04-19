@@ -2,7 +2,6 @@ import React, { Component } from 'react';
 import { View, StyleSheet, ImageBackground, Dimensions, Text } from 'react-native';
 import ScrollableTabView, { DefaultTabBar } from 'react-native-scrollable-tab-view';
 import Houses from '../../components/leaderboard/Houses';
-import Recycle from '../../components/leaderboard/Recycle';
 import Student from '../../components/leaderboard/Student';
 
 const width = Dimensions.get('screen').width;
@@ -26,10 +25,9 @@ export default class LeaderboardScreen extends Component {
                         style={{ marginTop: 5 }}
                         initialPage={0}
                         tabBarActiveTextColor="green"
-                        renderTabBar={() => <DefaultTabBar />}
+                        renderTabBar={() => <DefaultTabBar underlineStyle={{ backgroundColor: 'green' }} />}
                     >
                         <Houses tabLabel="Houses" props={this.props} />
-                        <Recycle tabLabel="Items" props={this.props} />
                         <Student tabLabel="Student" prop={this.props} />
                     </ScrollableTabView>
                 </View>
@@ -50,8 +48,8 @@ const styles = StyleSheet.create({
     tabbar: {
         flex: 1,
         marginTop: width * 0.3,
-        paddingEnd: 2,
-        paddingStart: 2
+        paddingEnd: 1,
+        paddingStart: 1
     },
     ImageBackground: {
         width: width * 0.4,

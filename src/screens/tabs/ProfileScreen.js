@@ -23,6 +23,7 @@ export default class ProfileScreen extends Component {
         this.signOut = this.signOut.bind(this);
         this.changeAvatar = this.changeAvatar.bind(this);
         this.modalVisible = this.modalVisible.bind(this);
+        this.houseID_to_string = this.houseID_to_string.bind(this);
     }
 
     componentDidMount() {
@@ -98,6 +99,20 @@ export default class ProfileScreen extends Component {
         })
     };
 
+    houseID_to_string = (houseId) => {
+        let house = "";
+        if (houseId === 1) {
+            house = "Red";
+        } else if (houseId === 2) {
+            house = "Blue";
+        } else if (houseId === 3) {
+            house = "Green";
+        } else {
+            house = "Yellow";
+        }
+        return house;
+    }
+
     render() {
         const { navigation } = this.props;
         return (
@@ -148,7 +163,7 @@ export default class ProfileScreen extends Component {
                     <View style={styles.userInfo}>
                         <Text style={[styles.text, { fontWeight: '200', fontSize: 36 }]}>{this.state.name}</Text>
                         <Text style={[styles.text, { fontSize: 20 }]}>Email: {this.state.email}</Text>
-                        <Text style={[styles.text, { fontSize: 18 }]}>House: {this.state.house}</Text>
+                        <Text style={[styles.text, { fontSize: 18 }]}>House: {this.houseID_to_string(this.state.house)}</Text>
                         <Text style={[styles.text, { color: '#AEB5BC', fontSize: 14, marginTop: 20 }]}>Student</Text>
                     </View>
 

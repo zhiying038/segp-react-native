@@ -1,5 +1,5 @@
 import React, { Component } from 'react';
-import { View, StyleSheet, Image, Dimensions, TouchableOpacity, AsyncStorage, Picker, Text } from 'react-native';
+import { View, StyleSheet, Image, Dimensions, TouchableOpacity, AsyncStorage, Picker, Text, ActivityIndicator } from 'react-native';
 import { Ionicons, AntDesign } from '@expo/vector-icons';
 import axios from 'axios';
 
@@ -17,7 +17,8 @@ export default class PreviewScreen extends Component {
             prediction: '',
             category: '',
             upload: false,
-            errorMessage: ''
+            errorMessage: '',
+            isLoading: false
         };
         this.handlePrediction = this.handlePrediction.bind(this);
         this.handleUserchoice = this.handleUserchoice.bind(this);
@@ -29,6 +30,7 @@ export default class PreviewScreen extends Component {
         const imageUrl = this.props.navigation.getParam('base64Img');
         this.setState({
             image: imageUrl,
+            isLoading: true
         });
 
         axios.post('http://157.245.205.223:8000/predict', {
@@ -45,16 +47,22 @@ export default class PreviewScreen extends Component {
             });
             alert(`Uploaded Successfully.\nIt is ${this.state.prediction}.\nPlease choose the recycle option.`);
             this.setState({
-                upload: !this.state.upload
+                upload: !this.state.upload,
+                isLoading: false
             });
         })
         .catch(error => {
             console.log(error);
+            this.setState({
+                isLoading: false
+            });
         })
     }
 
     handleUserchoice = async () => {
         const token = await AsyncStorage.getItem('userToken');
+        let bin = "";
+
         axios.post('http://157.245.205.223:8000/recycle', {
             timeout: 60000,
             recyclable: this.state.category
@@ -64,12 +72,28 @@ export default class PreviewScreen extends Component {
             }
         })
         .then(response => {
-            console.log(response.data);
-            alert(`Your choice ${this.state.category} has been sent.`);
+            // alert(`Your choice ${this.state.category} has been sent.`);
         })
         .catch(error => {
             console.log(error);
-        })
+        });
+
+        if (this.state.category === "Paper") {
+            bin = "blue";
+        } else if (this.state.category === "Glass") {
+            bin = "brown";
+        } else if (this.state.category === "Aluminium & Cans") {
+            bin = "orange";
+        }
+
+        alert(
+            `Your choice ${this.state.category} has been sent.
+            \nPlease put it into the ${bin} bin.`
+        );
+
+        setTimeout(() => {
+            this.props.navigation.navigate("cameraModal");
+        }, 1000);
     }
 
     validateUserchoice = () => {
@@ -100,6 +124,8 @@ export default class PreviewScreen extends Component {
                             <Ionicons name="ios-send" size={24} color="#000" />
                         </TouchableOpacity>)
                 }
+
+                {this.state.isLoading && <ActivityIndicator size="large" style={styles.loading} />}
 
                 <View style={styles.errorMessage}>
                     <Text style={styles.error}>{this.state.errorMessage}</Text>
@@ -133,8 +159,8 @@ const styles = StyleSheet.create({
     },
     image: {
         width: window,
-        height: 350,
-        top: -50
+        height: 300,
+        top: -50,
     },
     back: {
         position: 'absolute',
@@ -164,5 +190,11 @@ const styles = StyleSheet.create({
         justifyContent: 'center',
         marginHorizontal: 30,
         top: -50
+    },
+    loading: {
+        alignItems: 'center',
+        justifyContent: 'center',
+        height: 80,
+        marginBottom: -10
     }
 });

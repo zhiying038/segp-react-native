@@ -34,7 +34,7 @@ export default class Houses extends Component {
     }
 
     renderItem = ({ item, index }) => {
-        return (
+        return (    
             <View style={[styles.item, { 
                 backgroundColor: item.HouseName === 'Red' 
                     ? '#FF0000' 
@@ -99,7 +99,11 @@ export default class Houses extends Component {
             <View style={styles.container}>
                 <View style={styles.flatlist}>
                     <FlatList
-                        data={this.state.houses}
+                        data={[...this.state.houses].sort((a,b) => {
+                            const aScore = a.TotalRecycled;
+                            const bScore = b.TotalRecycled;
+                            return bScore - aScore;
+                        })}
                         renderItem={this.renderItem}
                         ItemSeparatorComponent={this.ItemSeparatorComponent}
                         showsVerticalScrollIndicator={false}

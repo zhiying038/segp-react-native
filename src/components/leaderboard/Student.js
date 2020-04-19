@@ -35,7 +35,7 @@ export default class Student extends Component {
 
     ItemSeparatorComponent = () => {
         return (
-            <View style={{ height: 30 }} />
+            <View style={{ height: 5, borderBottomWidth: 1, borderBottomColor: 'black' }} />
         );
     }
 
@@ -65,7 +65,11 @@ export default class Student extends Component {
         return (
             <View style={styles.container}>
                 <FlatList
-                    data={this.state.students}
+                    data={[...this.state.students].sort((a,b) => {
+                        const aScore = a.TotalRecycled;
+                        const bScore = b.TotalRecycled;
+                        return bScore - aScore;
+                    })}
                     renderItem={this.renderItem}
                     ItemSeparatorComponent={this.ItemSeparatorComponent}
                     keyExtractor={(item, index) => index.toString()}
