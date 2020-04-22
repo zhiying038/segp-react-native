@@ -133,7 +133,7 @@ export default class PreviewScreen extends Component {
 
                 {this.state.upload && 
                     <Picker
-                        style={{ height: 100, width: 180, top: -100 }}
+                        style={styles.picker}
                         selectedValue={this.state.category}
                         onValueChange={(itemValue, itemIndex) => this.setState({ category: itemValue })}
                     >
@@ -196,5 +196,10 @@ const styles = StyleSheet.create({
         justifyContent: 'center',
         height: 80,
         marginBottom: -10
+    },
+    picker: {
+        height: 100, 
+        width: 180, 
+        top: -100,
     }
 });

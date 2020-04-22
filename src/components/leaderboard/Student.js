@@ -15,6 +15,10 @@ export default class Student extends Component {
         this.housesData();
     }
 
+    componentDidUpdate() {
+        this.housesData();
+    }
+
     housesData = async () => {
         const token = await AsyncStorage.getItem('userToken');
         axios.get('http://157.245.205.223:8000/leaderboards', {

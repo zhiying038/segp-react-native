@@ -30,6 +30,10 @@ export default class ProfileScreen extends Component {
         this.getData();
     }
 
+    componentDidUpdate() {
+        this.getData();
+    }
+
     getData = async () => {
         const token = await AsyncStorage.getItem('userToken');
         axios.get('http://157.245.205.223:8000/student', {
