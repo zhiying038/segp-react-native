@@ -28,7 +28,7 @@ export default class LeaderboardScreen extends Component {
                         renderTabBar={() => <DefaultTabBar underlineStyle={{ backgroundColor: 'green' }} />}
                     >
                         <Houses tabLabel="Houses" props={this.props} />
-                        <Student tabLabel="Student" prop={this.props} />
+                        <Student tabLabel="Student (Top 10)" prop={this.props} />
                     </ScrollableTabView>
                 </View>
             </View>

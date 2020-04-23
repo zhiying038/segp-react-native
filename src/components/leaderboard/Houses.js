@@ -49,6 +49,22 @@ export default class Houses extends Component {
                     : '#27AE60'
             }]}>
                 <View style={styles.content}>
+                    <View>
+                        <Image 
+                            source=
+                            {
+                                index + 1 === 1
+                                ? require("../../../assets/leaderboard/gold.png")
+                                : index + 1 === 2
+                                ? require("../../../assets/leaderboard/silver.png")
+                                : index + 1 === 3
+                                ? require("../../../assets/leaderboard/bronze.png")
+                                : null
+                            }
+                            style={styles.medal}
+                        />
+                    </View>
+
                     <Text style={styles.houseName}>{item.HouseName}</Text>
 
                     <View style={styles.recycleContainer}>
@@ -112,6 +128,7 @@ export default class Houses extends Component {
                         ItemSeparatorComponent={this.ItemSeparatorComponent}
                         showsVerticalScrollIndicator={false}
                         keyExtractor={(item, index) => index.toString()}
+                        extraData={this.state}
                     />
                 </View>
             </View>
@@ -172,5 +189,10 @@ const styles = StyleSheet.create({
     image: {
         height: 50,
         width: 50
-    }
+    },
+    medal: {
+        width: 30,
+        height: 30,
+        position: 'absolute'
+    },
 });

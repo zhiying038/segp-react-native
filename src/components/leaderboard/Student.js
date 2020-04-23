@@ -6,8 +6,8 @@ export default class Student extends Component {
     constructor(props) {
         super(props);
         this.state = {
-            students: ""
-        }
+            students: "",
+        };
         this.housesData = this.housesData.bind(this);
     }
 
@@ -43,9 +43,23 @@ export default class Student extends Component {
         );
     }
 
-    renderItem = ({ item }) => {
+    renderItem = ({ item, index }) => {
         return (
             <View style={styles.item}>
+                <Image
+                    source=
+                    {
+                        index + 1 === 1 
+                        ? require("../../../assets/leaderboard/gold.png")
+                        : index + 1 === 2
+                        ? require("../../../assets/leaderboard/silver.png")
+                        : index + 1 === 3
+                        ? require("../../../assets/leaderboard/bronze.png")
+                        : require("../../../assets/leaderboard/badge.png")
+                    }
+                    style={styles.medal}
+                />
+
                 <View style={styles.imageContainer}>
                     <Image
                         source={
@@ -73,11 +87,12 @@ export default class Student extends Component {
                         const aScore = a.TotalRecycled;
                         const bScore = b.TotalRecycled;
                         return bScore - aScore;
-                    })}
+                    }).slice(0,10)}
                     renderItem={this.renderItem}
                     ItemSeparatorComponent={this.ItemSeparatorComponent}
                     keyExtractor={(item, index) => index.toString()}
                     showsVerticalScrollIndicator={false}
+                    extraData={this.state}
                 />
             </View>
         )
@@ -108,14 +123,20 @@ const styles = StyleSheet.create({
     imageContainer: {
         width: 80,
         height: 80,
+        marginLeft: 15
     },
     content: {
         flex: 1,
         justifyContent: 'center',
-        paddingHorizontal: 10
+        paddingHorizontal: 10,
+        marginLeft: 15
     },
     name: {
         fontSize: 18,
         fontWeight: 'bold'
+    },
+    medal: {
+        width: 30,
+        height: 30,
     }
 })
