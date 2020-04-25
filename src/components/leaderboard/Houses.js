@@ -3,6 +3,8 @@ import { View, Text, StyleSheet, FlatList, AsyncStorage, Image } from 'react-nat
 import axios from 'axios';
 
 export default class Houses extends Component {
+    _isMounted = false;
+
     constructor(props) {
         super(props);
         this.state = {
@@ -12,12 +14,13 @@ export default class Houses extends Component {
     }
 
     componentDidMount() {
+        // this._isMounted = true;
         this.housesData();
     }
 
-    componentDidUpdate() {
-        this.housesData();
-    }
+    // componentWillUnmount() {
+    //     this._isMounted = false;
+    // }
 
     housesData = async () => {
         const token = await AsyncStorage.getItem('userToken');

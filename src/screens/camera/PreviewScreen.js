@@ -6,6 +6,8 @@ import axios from 'axios';
 const window = Dimensions.get('window').width;
 
 export default class PreviewScreen extends Component {
+    _isMounted = false;
+
     static navigationOptions = {
         headerShown: false
     };
@@ -23,6 +25,15 @@ export default class PreviewScreen extends Component {
         this.handlePrediction = this.handlePrediction.bind(this);
         this.handleUserchoice = this.handleUserchoice.bind(this);
         this.validateUserchoice = this.validateUserchoice.bind(this);
+    }
+
+    async componentDIdMount() {
+        this._isMounted = true;
+        await this.handleUserchoice();
+    }
+
+    componentWillUnmount() {
+        this._isMounted = false;
     }
 
     handlePrediction = async () => {
@@ -77,14 +88,6 @@ export default class PreviewScreen extends Component {
 
         alert(`Please submit your trash into the ${bin} bin.`);
 
-        this.setState({
-            isLoading: false
-        });
-
-        this.setState({
-            isLoading: true
-        });
-
         axios.post('http://157.245.205.223:8000/recycle', {
             recyclable: this.state.category
         }, {
@@ -92,22 +95,23 @@ export default class PreviewScreen extends Component {
                 'Authorization': `JWT ${token}`
             }
         })
-        .then(response => {
-            setTimeout(() => {
-                this.setState({
-                    isLoading: false
-                });
-            }, 3000);
-            
-            this.props.navigation.navigate("Profile");
+        .then(response => {     
+            console.log(response.data)
+            this.setState({
+                isLoading: false
+            });
 
+            if (response.data.status === 'submitted') {
+                alert('Successfully submitted trash.\nPoints updated.');
+                this.props.navigation.navigate("Profile");
+            }
         })
         .catch(error => {
             console.log(error);
             if (error.response) {
                 if (error.response.status === 400) {
                     this.setState({
-                        errorMessage: "You have not submitted your trash."
+                        errorMessage: "You have not submitted the thrash."
                     });
                 }
             }
