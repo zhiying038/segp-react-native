@@ -63,8 +63,29 @@ export default class PreviewScreen extends Component {
         const token = await AsyncStorage.getItem('userToken');
         let bin = "";
 
+        this.setState({
+            isLoading: true
+        });
+
+        if (this.state.category === "Paper") {
+            bin = "blue";
+        } else if (this.state.category === "Glass") {
+            bin = "brown";
+        } else if (this.state.category === "Aluminium") {
+            bin = "orange";
+        }
+
+        alert(`Please submit your trash into the ${bin} bin.`);
+
+        this.setState({
+            isLoading: false
+        });
+
+        this.setState({
+            isLoading: true
+        });
+
         axios.post('http://157.245.205.223:8000/recycle', {
-            timeout: 60000,
             recyclable: this.state.category
         }, {
             headers: {
@@ -72,32 +93,29 @@ export default class PreviewScreen extends Component {
             }
         })
         .then(response => {
-            // alert(`Your choice ${this.state.category} has been sent.`);
+            setTimeout(() => {
+                this.setState({
+                    isLoading: false
+                });
+            }, 3000);
+            
+            this.props.navigation.navigate("Profile");
+
         })
         .catch(error => {
             console.log(error);
+            if (error.response) {
+                if (error.response.status === 400) {
+                    this.setState({
+                        errorMessage: "You have not submitted your trash."
+                    });
+                }
+            }
         });
-
-        if (this.state.category === "Paper") {
-            bin = "blue";
-        } else if (this.state.category === "Glass") {
-            bin = "brown";
-        } else if (this.state.category === "Aluminium & Cans") {
-            bin = "orange";
-        }
-
-        alert(
-            `Your choice ${this.state.category} has been sent.
-            \nPlease put it into the ${bin} bin.`
-        );
-
-        setTimeout(() => {
-            this.props.navigation.navigate("cameraModal");
-        }, 1000);
     }
 
     validateUserchoice = () => {
-        if (this.state.category === "") {
+        if (this.state.category == 0) {
             this.setState({
                 errorMessage: "Please select an option from the dropdown menu."
             });
@@ -125,7 +143,9 @@ export default class PreviewScreen extends Component {
                         </TouchableOpacity>)
                 }
 
-                {this.state.isLoading && <ActivityIndicator size="large" style={styles.loading} />}
+                {this.state.isLoading 
+                    && <ActivityIndicator size="large" style={styles.loading} />
+                }
 
                 <View style={styles.errorMessage}>
                     <Text style={styles.error}>{this.state.errorMessage}</Text>
@@ -137,7 +157,7 @@ export default class PreviewScreen extends Component {
                         selectedValue={this.state.category}
                         onValueChange={(itemValue, itemIndex) => this.setState({ category: itemValue })}
                     >
-                        <Picker.Item label="Options" />
+                        <Picker.Item label="Options" value='0' />
                         <Picker.Item label="Paper" value="Paper" />
                         <Picker.Item label="Glass" value="Glass" />
                         <Picker.Item label="Aluminium & Cans" value="Aluminium" />
