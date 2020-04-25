@@ -191,7 +191,7 @@ export default class ProfileScreen extends Component {
                             </View>
 
                             <View style={[styles.categoryContainer, {backgroundColor: '#FF7400' }]}>
-                                <Text style={styles.categoryTitle}>Aluminium & Cans</Text>
+                                <Text style={styles.categoryTitle}>Aluminium & Plastic</Text>
                                 <View>
                                     <View style={{ alignItems: 'center' }}>
                                         <Text style={styles.countItem}>{this.state.OrangeRecycled}</Text>
@@ -225,7 +225,7 @@ const styles = StyleSheet.create({
     titleBar: {
         flexDirection: 'row',
         justifyContent: 'space-between',
-        marginTop: 15,
+        marginTop: 35,
         marginHorizontal: 16
     },
     profilePic: {

@@ -56,10 +56,10 @@ const styles = StyleSheet.create({
     },
     title: {
         color: '#FFF',
-        marginTop: 20,
+        marginTop: 45,
         fontWeight: 'bold',
         fontSize: 20,
-        marginRight: 5
+        marginRight: 3
     },
     tabBar: {
         flex: 1,
