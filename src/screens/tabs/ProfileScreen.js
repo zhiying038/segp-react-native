@@ -225,7 +225,7 @@ const styles = StyleSheet.create({
     titleBar: {
         flexDirection: 'row',
         justifyContent: 'space-between',
-        marginTop: 35,
+        marginTop: 20,
         marginHorizontal: 16
     },
     profilePic: {
@@ -262,7 +262,7 @@ const styles = StyleSheet.create({
         flex: 1
     },
     categoryTitle: {
-        fontSize: 24,
+        fontSize: 20,
         fontWeight: '700',
         color: '#FFF',
         marginBottom: 18

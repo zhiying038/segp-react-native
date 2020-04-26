@@ -9,7 +9,7 @@ export default class Tail extends Component {
 
     render() {
         let tailList = this.props.elements.map((el, idx) => {
-            return <View key={idx} style={{ width: this.props.size, height: this.props.size, backgroundColor: '#888', position: 'absolute', left: el[0]*this.props.size, top: el[1]*this.props.size }} />
+            return <View key={idx} style={{ width: this.props.size, height: this.props.size, backgroundColor: 'red', position: 'absolute', left: el[0]*this.props.size, top: el[1]*this.props.size }} />
         })
 
         return (
