@@ -164,7 +164,7 @@ export default class PreviewScreen extends Component {
                         <Picker.Item label="Options" value='0' />
                         <Picker.Item label="Paper" value="Paper" />
                         <Picker.Item label="Glass" value="Glass" />
-                        <Picker.Item label="Aluminium & Cans" value="Aluminium" />
+                        <Picker.Item label="Aluminium & Plastic" value="Aluminium" />
                     </Picker>
                 }
 

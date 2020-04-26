@@ -1,5 +1,5 @@
 import React, { Component } from 'react';
-import { StyleSheet, View, Text, ImageBackground, Dimensions } from 'react-native';
+import { StyleSheet, View, Text, ImageBackground, Dimensions, SafeAreaView } from 'react-native';
 import ScrollableTabView, { DefaultTabBar } from 'react-native-scrollable-tab-view';
 import Info from '../../components/home/Info';
 
@@ -12,7 +12,7 @@ export default class HomeScreen extends Component {
 
     render() {
         return (
-            <View style={styles.container}>
+            <SafeAreaView style={styles.container}>
                 <View style={styles.header}>
                     <ImageBackground
                         source={require('../../../assets/homeHeader.png')}
@@ -35,7 +35,7 @@ export default class HomeScreen extends Component {
                         <Info tabLabel="Fun Facts" props={this.props} />
                     </ScrollableTabView>
                 </View>
-            </View>
+            </SafeAreaView>
         );
     }
 }
@@ -56,10 +56,9 @@ const styles = StyleSheet.create({
     },
     title: {
         color: '#FFF',
-        marginTop: 45,
+        marginTop: 30,
         fontWeight: 'bold',
-        fontSize: 20,
-        marginRight: 3
+        fontSize: 20
     },
     tabBar: {
         flex: 1,

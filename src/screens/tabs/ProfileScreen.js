@@ -1,5 +1,5 @@
 import React, { Component } from 'react';
-import { View, Text, StyleSheet, ScrollView, TouchableOpacity, AsyncStorage, Image, Modal } from 'react-native';
+import { View, Text, StyleSheet, ScrollView, TouchableOpacity, AsyncStorage, Image, Modal, SafeAreaView } from 'react-native';
 import { AntDesign, Ionicons } from '@expo/vector-icons';
 import AboutModal from '../../components/AboutModal';
 import * as ImagePicker from 'expo-image-picker';
@@ -120,7 +120,7 @@ export default class ProfileScreen extends Component {
     render() {
         const { navigation } = this.props;
         return (
-            <View style={styles.container}>
+            <SafeAreaView style={styles.container}>
                 <Modal 
                     animationType="slide" 
                     visible={this.state.visible} 
@@ -212,7 +212,7 @@ export default class ProfileScreen extends Component {
                         </ScrollView>
                     </View>
                 </ScrollView>
-            </View>
+            </SafeAreaView>
         );
     }
 }
