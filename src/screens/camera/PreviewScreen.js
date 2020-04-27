@@ -146,10 +146,6 @@ export default class PreviewScreen extends Component {
                         </TouchableOpacity>)
                 }
 
-                {this.state.isLoading 
-                    && <ActivityIndicator size="large" style={styles.loading} />
-                }
-
                 <View style={styles.errorMessage}>
                     <Text style={styles.error}>{this.state.errorMessage}</Text>
                 </View>
@@ -168,6 +164,10 @@ export default class PreviewScreen extends Component {
                 }
 
                 <Image style={styles.image} source={{ uri: uri }} />
+
+                {this.state.isLoading 
+                    && <ActivityIndicator size="large" style={styles.loading} />
+                }
             </View>
         )
     }
@@ -217,12 +217,17 @@ const styles = StyleSheet.create({
     loading: {
         alignItems: 'center',
         justifyContent: 'center',
-        height: 80,
-        marginBottom: -10
+        position: 'absolute',
+        left: 0,
+        right: 0,
+        top: 0,
+        bottom: 0,
+        opacity: 0.5,
+        backgroundColor: 'black'
     },
     picker: {
         height: 100, 
-        width: 180, 
+        width: 200, 
         top: -100,
     }
 });
