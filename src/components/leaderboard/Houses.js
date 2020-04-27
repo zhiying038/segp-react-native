@@ -3,8 +3,6 @@ import { View, Text, StyleSheet, FlatList, AsyncStorage, Image } from 'react-nat
 import axios from 'axios';
 
 export default class Houses extends Component {
-    _isMounted = false;
-
     constructor(props) {
         super(props);
         this.state = {
@@ -14,13 +12,12 @@ export default class Houses extends Component {
     }
 
     componentDidMount() {
-        // this._isMounted = true;
         this.housesData();
     }
 
-    // componentWillUnmount() {
-    //     this._isMounted = false;
-    // }
+    componentDidUpdate() {
+        this.housesData();
+    }
 
     housesData = async () => {
         const token = await AsyncStorage.getItem('userToken');
@@ -103,7 +100,6 @@ export default class Houses extends Component {
                     </View>
 
                     <View style={{ marginTop: 20 }}>
-                        <Text style={{ fontSize: 18, textAlign: 'center' }}>Total Recycled: {item.TotalRecycled}</Text>
                         <Text style={{ fontSize: 18, textAlign: 'center' }}>Total Points: {item.HousePoints}</Text>
                     </View>
                 </View>

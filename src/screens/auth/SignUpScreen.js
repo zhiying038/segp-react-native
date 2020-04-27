@@ -15,7 +15,7 @@ export default class SignUpScreen extends Component {
         this.state = {
             fullname: '',
             email: '',
-            house: 'Red',
+            house: '',
             password: '',
             errorMessage: '',
             avatar: null,
@@ -60,7 +60,7 @@ export default class SignUpScreen extends Component {
     };
 
     validateCredentials = () => {
-        if (this.state.fullname === "" || this.state.email === "" ||  this.state.password === "") {
+        if (this.state.fullname === "" || this.state.email === "" ||  this.state.password === "" || this.state.house == 0) {
             alert("Please enter all credentials.");
         } else {
             this.handleSignUp();
@@ -166,6 +166,7 @@ export default class SignUpScreen extends Component {
                             style={{ height: 50, width: 150 }}
                             onValueChange={(itemValue, itemIndex) => this.setState({ house: itemValue })}
                         >
+                            <Picker.Item label="Houses" value="0" />
                             <Picker.Item label="Red" value="1" />
                             <Picker.Item label="Blue" value="2" />
                             <Picker.Item label="Yellow" value="3" />
