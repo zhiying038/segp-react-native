@@ -173,7 +173,7 @@ export default class ProfileScreen extends Component {
 
                     <View style={styles.recycleStats}>
                         <View style={[styles.totalContainer, { backgroundColor: '#DAA520' }]}>
-                            <Text style={styles.countItem}>{this.state.TotalRecycled}</Text>
+                            <Text style={styles.countItem}>{this.state.BlueRecycled+this.state.BrownRecycled+this.state.OrangeRecycled}</Text>
                             <Text style={[styles.countSubtext]}>Total Items Recycled</Text>
                         </View>
                     </View>

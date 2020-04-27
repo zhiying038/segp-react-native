@@ -73,19 +73,21 @@ export default class Student extends Component {
 
                 <View style={styles.content}>
                     <Text style={styles.name}>{item.StudentName}</Text>
-                    <Text>Total Recycled: {item.TotalRecycled}</Text>
+                    <Text>Total Recycled: {item.BlueRecycled+item.OrangeRecycled+item.BrownRecycled}</Text>
                 </View>
             </View>
         )
     }
 
     render() {
+        const { students } = this.state;
+
         return (
             <View style={styles.container}>
                 <FlatList
-                    data={[...this.state.students].sort((a,b) => {
-                        const aScore = a.TotalRecycled;
-                        const bScore = b.TotalRecycled;
+                    data={[...students].sort((a,b) => {
+                        const aScore = a.BlueRecycled + a.OrangeRecycled + a.BrownRecycled;
+                        const bScore = b.BlueRecycled + b.OrangeRecycled + b.BrownRecycled;
                         return bScore - aScore;
                     }).slice(0,10)}
                     renderItem={this.renderItem}
