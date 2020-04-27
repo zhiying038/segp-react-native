@@ -13,7 +13,7 @@ export default class Food extends Component {
         return (
             // <View style={{ width: this.props.size, height: this.props.size, backgroundColor: 'green', position: 'absolute', left: x*this.props.size, top: y*this.props.size }} />
             <Image
-                source={require("./images/recycle.jpg")}
+                source={require("./images/bag.png")}
                 style={{
                     position: 'absolute',
                     width: this.props.size,

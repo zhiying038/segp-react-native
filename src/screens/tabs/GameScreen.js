@@ -25,6 +25,7 @@ export default class Snake extends Component {
     onEvent = (e) => {
         if (e.type === "game-over") {
             this.gameOver();
+            alert("Game Over");
             this.setState({
                 running: false,
             });

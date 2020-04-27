@@ -1,9 +1,9 @@
 {
   "devToolsPort": 19002,
   "expoServerPort": 19000,
-  "packagerPort": 19001,
-  "packagerPid": 43128,
+  "packagerPort": null,
+  "packagerPid": null,
   "expoServerNgrokUrl": "https://jf-hhi.anonymous.recycling.exp.direct",
   "packagerNgrokUrl": "https://packager.jf-hhi.anonymous.recycling.exp.direct",
-  "ngrokPid": 21792
+  "ngrokPid": 22924
 }

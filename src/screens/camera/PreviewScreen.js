@@ -96,7 +96,6 @@ export default class PreviewScreen extends Component {
             }
         })
         .then(response => {     
-            console.log(response.data)
             this.setState({
                 isLoading: false
             });
