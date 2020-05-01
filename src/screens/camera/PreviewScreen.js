@@ -58,8 +58,8 @@ export default class PreviewScreen extends Component {
             });
             alert(
                 `Upload Successful.
-                \nWe predict that is ${this.state.prediction}.
-                \nPlease choose the appropriate recyclable category.`
+                \nWe predict that it is ${this.state.prediction}.
+                \nPlease choose the appropriate category.`
             );
             this.setState({
                 upload: !this.state.upload,
