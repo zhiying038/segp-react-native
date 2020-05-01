@@ -56,7 +56,11 @@ export default class PreviewScreen extends Component {
             this.setState({
                 prediction: data.prediction
             });
-            alert(`Uploaded Successfully.\nIt is ${this.state.prediction}.\nPlease choose the recycle option.`);
+            alert(
+                `Upload Successful.
+                \nWe predict that is ${this.state.prediction}.
+                \nPlease choose the appropriate recyclable category.`
+            );
             this.setState({
                 upload: !this.state.upload,
                 isLoading: false
@@ -157,7 +161,7 @@ export default class PreviewScreen extends Component {
                         onValueChange={(itemValue, itemIndex) => this.setState({ category: itemValue })}
                     >
                         <Picker.Item label="Options" value='0' />
-                        <Picker.Item label="Paper" value="Paper" />
+                        <Picker.Item label="Paper & Cardboard" value="Paper" />
                         <Picker.Item label="Glass" value="Glass" />
                         <Picker.Item label="Aluminium & Plastic" value="Aluminium" />
                     </Picker>
