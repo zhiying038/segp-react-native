@@ -110,9 +110,9 @@ export default class ProfileScreen extends Component {
         } else if (houseId === 2) {
             house = "Blue";
         } else if (houseId === 3) {
-            house = "Green";
-        } else {
             house = "Yellow";
+        } else {
+            house = "Green";
         }
         return house;
     }

@@ -52,7 +52,10 @@ export default class CameraScreen extends Component {
                 base64: true
             })
             .then((image) => {
-                this.props.navigation.navigate("previewModal", { photo: image.uri, base64Img: image.base64 })
+                this.props.navigation.navigate("previewModal", { 
+                    photo: image.uri, 
+                    base64Img: image.base64 
+                })
             });
         }
     }
