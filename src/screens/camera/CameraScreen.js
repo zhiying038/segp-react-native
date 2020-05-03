@@ -109,7 +109,7 @@ export default class CameraScreen extends Component {
                     {this.renderBottomBar()}
                 </Camera>
             </View>
-        )
+        );
     }
 
     render() {

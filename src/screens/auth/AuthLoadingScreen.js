@@ -9,6 +9,7 @@ export default class AuthLoadingScreen extends Component {
     }
 
     bootstrapAsync = async () => {
+        // Store JWT token to persist login
         const userToken = await AsyncStorage.getItem('userToken');
         this.props.navigation.navigate(userToken ? 'App' : 'Auth');
     }
