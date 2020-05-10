@@ -9,8 +9,8 @@ Download Expo App from Google Play Store or App Store.
 
 ### How to Run
 1. Install expo-cli. 
-- NPM: npm install -g expo-cli
-- Yarn: yarn global add expo-cli
+   - NPM: npm install -g expo-cli
+   - Yarn: yarn global add expo-cli
 2. Run npm install.
 3. Run expo start --no-dev.
 4. Scan the QR Code with Expo Client.
