@@ -7,6 +7,9 @@ If Yarn was installed when the project was initialized, then dependencies will h
 ### Expo Client
 Download Expo App from Google Play Store or App Store.
 
+### Node.js
+It is preferably to install Node.js 10.20 version as it a more stable.
+
 ### How to Run
 1. Install expo-cli. 
    - NPM: npm install -g expo-cli
