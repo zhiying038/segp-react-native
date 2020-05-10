@@ -1,3 +1,7 @@
+/* 
+Code written by group 7A
+*/
+
 import Constants from './Constants';
 
 const randomBetween = (min, max) => {

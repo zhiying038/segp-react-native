@@ -1,3 +1,7 @@
+/* 
+Code written by group 7A
+*/
+
 import { Dimensions } from 'react-native';
 
 export default Constants = {

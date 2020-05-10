@@ -1,3 +1,8 @@
+/* 
+Code written by group 7A
+*/
+
+
 import React, { Component } from 'react';
 import { ActivityIndicator, AsyncStorage, StatusBar, StyleSheet, View, Image, Text } from 'react-native';
 

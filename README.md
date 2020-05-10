@@ -17,3 +17,38 @@ It is preferably to install Node.js 10.20 version as it a more stable.
 2. Run npm install.
 3. Run expo start --no-dev.
 4. Scan the QR Code with Expo Client.
+
+Code is written by Group 7A
+
+Libraries are:
+- react-native-community/async-storage
+- react-native-community/masked-view
+- axios
+- eslint
+- expo
+- expo-av
+- expo-camera
+- expo-constants
+- expo-image-picker
+- expo-linear-gradient
+- expo-permissions
+- react
+- react-dom
+- react-native
+- react-native-game-engine
+- react-native-gesture-handler
+- react-native-reanimated
+- react-native-safe-area-context
+- react-native-screens
+- react-native-scrollable-tab-view
+- react-native-unimodules
+- react-native-webview
+- react-native-windows
+- react-navigation
+- react-navigation-stack
+- react-navigation-tabs
+- babel/core
+- babel-jest
+- jest
+- metro-react-native-babel-preset
+- react-test-renderer

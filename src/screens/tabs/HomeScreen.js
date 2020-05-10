@@ -1,3 +1,10 @@
+/* 
+Code written by group 7A
+
+Libraries are:
+- react-naive-scrollable-tab-view
+*/
+
 import React, { Component } from 'react';
 import { StyleSheet, View, Text, ImageBackground, Dimensions, SafeAreaView } from 'react-native';
 import ScrollableTabView, { DefaultTabBar } from 'react-native-scrollable-tab-view';

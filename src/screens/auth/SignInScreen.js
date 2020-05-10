@@ -1,3 +1,11 @@
+/* 
+Code written by group 7A
+
+Libraries are:
+- @expo/vector-icons
+- axios
+*/
+
 import React, { Component } from 'react';
 import { Image, Text, View, StyleSheet, TouchableOpacity, StatusBar, TextInput, LayoutAnimation, AsyncStorage, KeyboardAvoidingView, Keyboard, TouchableWithoutFeedback } from 'react-native';
 import { MaterialIcons } from '@expo/vector-icons';

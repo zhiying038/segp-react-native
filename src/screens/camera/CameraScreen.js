@@ -1,3 +1,13 @@
+/* 
+Code written by group 7A
+
+Libraries are:
+- expo-camera
+- expo-constants
+- expo-permissions
+- @expo/vector-icons
+*/
+
 import React, { Component } from 'react';
 import { View, StyleSheet, Text, TouchableOpacity } from 'react-native';
 import { Camera } from 'expo-camera';

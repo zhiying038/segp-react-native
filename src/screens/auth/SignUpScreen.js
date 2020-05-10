@@ -1,3 +1,13 @@
+/* 
+Code written by group 7A
+
+Libraries are:
+- axios
+- expo-image-picker
+- expo-permissions
+- @expo/vector-icons
+*/
+
 import React, { Component } from 'react';
 import { Image, Text, View, StyleSheet, TouchableOpacity, StatusBar, TextInput, Picker, Keyboard, TouchableWithoutFeedback } from 'react-native';
 import { Ionicons, MaterialIcons } from '@expo/vector-icons';

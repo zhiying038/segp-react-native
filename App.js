@@ -1,3 +1,12 @@
+/* 
+Code written by group 7A
+Libraries are:
+- react-navigation
+- react-navigation-stack
+- react-navigation-tabs
+- @expo/vector-icons
+*/
+
 import React from 'react';
 import { createAppContainer, createSwitchNavigator } from 'react-navigation';
 import { createStackNavigator } from 'react-navigation-stack';

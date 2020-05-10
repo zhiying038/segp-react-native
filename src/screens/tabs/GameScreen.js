@@ -1,3 +1,11 @@
+/* 
+Code written by group 7A
+
+Libraries are:
+- expo-av
+- react-native-game-engine
+*/
+
 import React, { Component } from "react";
 import {
   View,

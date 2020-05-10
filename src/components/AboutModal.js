@@ -1,3 +1,10 @@
+/* 
+Code written by group 7A
+
+Libraries are:
+- @expo/vector-icons
+*/
+
 import React, { Component } from 'react';
 import { StyleSheet, Text, View, TouchableOpacity } from 'react-native';
 import { AntDesign } from '@expo/vector-icons';

@@ -1,3 +1,7 @@
+/* 
+Code written by group 7A
+*/
+
 export default HomeInfo = [
     {
         category: 'Cardboard',

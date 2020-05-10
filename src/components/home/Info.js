@@ -1,3 +1,10 @@
+/* 
+Code written by group 7A
+
+Libraries are:
+- expo-linear-gradient
+*/
+
 import React, { Component } from 'react';
 import { View, Text, StyleSheet, Image, FlatList } from 'react-native';
 import { LinearGradient } from 'expo-linear-gradient';

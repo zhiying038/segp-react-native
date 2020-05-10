@@ -1,3 +1,11 @@
+/* 
+Code written by group 7A
+
+Libraries are:
+- axios
+- @expo/vector-icons
+*/
+
 import React, { Component } from "react";
 import {
   View,

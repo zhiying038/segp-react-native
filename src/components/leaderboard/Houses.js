@@ -1,3 +1,10 @@
+/* 
+Code written by group 7A
+
+Libraries are:
+- axios
+*/
+
 import React, { Component } from "react";
 import {
   View,
